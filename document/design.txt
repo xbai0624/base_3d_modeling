@@ -1,0 +1,20 @@
+
+1. Text/xml parser to parse detector information.
+
+2. Module is a base uint represents detector volume.
+   Module has a hiararchy structure, it also has a
+   unordered_map member which consists of other Modules
+
+   Module has a member which can generate triangle units
+   that can be passed to opengl for drawing
+
+3. OpenGLView is the unit for rendering the detector 
+   assembly. 
+
+4. Cube is a subclass of Module, dedicated for generating
+   cube structure
+
+5. Sphere is a subclass of Module, dedicated for generating
+   sphere structure
+
+6. Tube ......
