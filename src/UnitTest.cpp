@@ -16,5 +16,7 @@ namespace base_cad
     {
         std::cout<<"testing module..."<<std::endl;
         m = new Module();
+        cube = new Cube();
+        cube -> UnitTest();
     }
 }

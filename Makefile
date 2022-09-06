@@ -16,7 +16,7 @@ CC            = gcc
 CXX           = g++
 DEFINES       = -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -O2 -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
-CXXFLAGS      = -pipe -O2 -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
+CXXFLAGS      = -pipe -std=c++17 -O2 -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
 INCPATH       = -I. -Iinclude -I/usr/include/qt5 -I/usr/include/qt5/QtOpenGL -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtCore -Imoc -I/../lib64/qt5/mkspecs/linux-g++
 QMAKE         = /usr/bin/qmake-qt5
 DEL_FILE      = rm -f
@@ -54,9 +54,11 @@ OBJECTS_DIR   = obj/
 
 SOURCES       = src/main.cpp \
 		src/Module.cpp \
+		src/Cube.cpp \
 		src/UnitTest.cpp 
 OBJECTS       = obj/main.o \
 		obj/Module.o \
+		obj/Cube.o \
 		obj/UnitTest.o
 DIST          = /../lib64/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib64/qt5/mkspecs/common/unix.conf \
@@ -135,8 +137,10 @@ DIST          = /../lib64/qt5/mkspecs/features/spec_pre.prf \
 		/../lib64/qt5/mkspecs/features/yacc.prf \
 		/../lib64/qt5/mkspecs/features/lex.prf \
 		base_cad.pro include/Module.h \
+		include/Cube.h \
 		include/UnitTest.h src/main.cpp \
 		src/Module.cpp \
+		src/Cube.cpp \
 		src/UnitTest.cpp
 QMAKE_TARGET  = main
 DESTDIR       = 
@@ -319,8 +323,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /../lib64/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents include/Module.h include/UnitTest.h $(DISTDIR)/
-	$(COPY_FILE) --parents src/main.cpp src/Module.cpp src/UnitTest.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents include/Module.h include/Cube.h include/UnitTest.h $(DISTDIR)/
+	$(COPY_FILE) --parents src/main.cpp src/Module.cpp src/Cube.cpp src/UnitTest.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -350,7 +354,7 @@ compiler_moc_predefs_make_all: moc/moc_predefs.h
 compiler_moc_predefs_clean:
 	-$(DEL_FILE) moc/moc_predefs.h
 moc/moc_predefs.h: /../lib64/qt5/mkspecs/features/data/dummy.cpp
-	g++ -pipe -O2 -Wall -Wextra -dM -E -o moc/moc_predefs.h /../lib64/qt5/mkspecs/features/data/dummy.cpp
+	g++ -pipe -std=c++17 -O2 -Wall -Wextra -dM -E -o moc/moc_predefs.h /../lib64/qt5/mkspecs/features/data/dummy.cpp
 
 compiler_moc_header_make_all:
 compiler_moc_header_clean:
@@ -376,6 +380,10 @@ obj/main.o: src/main.cpp include/UnitTest.h \
 
 obj/Module.o: src/Module.cpp include/Module.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/Module.o src/Module.cpp
+
+obj/Cube.o: src/Cube.cpp include/Cube.h \
+		include/Module.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/Cube.o src/Cube.cpp
 
 obj/UnitTest.o: src/UnitTest.cpp include/UnitTest.h \
 		include/Module.h

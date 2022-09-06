@@ -2,6 +2,7 @@
 #define __UNIT_TEST_H__
 
 #include "Module.h"
+#include "Cube.h"
 
 namespace base_cad
 {
@@ -15,6 +16,7 @@ namespace base_cad
 
     private:
         Module *m;
+        Cube *cube;
     };
 }
 

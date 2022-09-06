@@ -9,6 +9,8 @@ INCLUDEPATH += ./include
 
 QT += core gui widgets opengl
 CONFIG += 
+QMAKE_CXXFLAGS += -std=c++17
+QMAKE_CXXFLAGS -= -std=gnu++1z
 
 MOC_DIR = moc
 OBJECTS_DIR = obj
@@ -23,9 +25,11 @@ OBJECTS_DIR = obj
 # Input
 HEADERS += \
     include/Module.h \
+    include/Cube.h \
     include/UnitTest.h \
 
 SOURCES += \
     src/main.cpp \
     src/Module.cpp \
+    src/Cube.cpp \
     src/UnitTest.cpp \
