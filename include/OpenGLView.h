@@ -12,6 +12,7 @@ class QOpenGLShaderProgram; // this is a global class
 namespace base_cad
 {
     class Module; // only use Module the one from base_cad namespace
+    class GeometryManager;
 
     class OpenGLView : public QOpenGLWidget, protected QOpenGLFunctions
     {
@@ -25,6 +26,7 @@ namespace base_cad
         QSize sizeHint() const override;
 
         void setModule(Module *m);
+        void setGeometryManager(GeometryManager* manager);
 
     public slots:
         void setXRotation(int angle);
@@ -45,6 +47,7 @@ namespace base_cad
 
     private:
         void setupVertexAttribs();
+        void copyContentDataFromModule();
         void start_logo();
 
     private:
@@ -73,7 +76,8 @@ namespace base_cad
         int *content_data_index; // reserved
         int content_data_index_length; // reserved
 
-        Module *module;
+        Module *module = nullptr;
+        GeometryManager *geo_manager = nullptr;
     };
 }
 

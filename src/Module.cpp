@@ -89,11 +89,12 @@ namespace base_cad
         if(m -> IsEmpty())
             return;
 
-        if(!m -> HasChild())
+        if(!(m -> HasChild()))
         {
             size_t index = m_module.size();
             assert(m_module_triangles.size() == index);
             assert(m_module_triangle_elements.size() == index);
+            assert(m_module_color.size() == index);
 
             m_module[index] = m;
 
@@ -141,5 +142,13 @@ namespace base_cad
     void Module::SetColor([[maybe_unused]] QColor c)
     {
         // place holder, this function should be implemented in subclass
+    }
+
+    int Module::GetTriangleLength()
+    {
+        int length = 0;
+        for(auto &i: m_module_triangles)
+            length += (int)i.second.size();
+        return length;
     }
 }

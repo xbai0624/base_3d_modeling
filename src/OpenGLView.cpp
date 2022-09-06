@@ -5,6 +5,7 @@
 #include <iostream>
 #include <iomanip>
 #include "Module.h"
+#include "GeometryManager.h"
 
 namespace base_cad
 {
@@ -55,7 +56,8 @@ namespace base_cad
         connect(context(), &QOpenGLContext::aboutToBeDestroyed, this, &OpenGLView::cleanup);
 
         initializeOpenGLFunctions();
-        glClearColor(1.0, 1.0, 1.0, 0);
+        //glClearColor(1.0, 1.0, 1.0, 0);
+        glClearColor(.0, .0, .0, 0);
 
         m_program = new QOpenGLShaderProgram;
         QString vertex_shader_file("./glsl/vertex_shader.glsl");
@@ -82,8 +84,8 @@ namespace base_cad
         setupVertexAttribs();
 
         // set light position to a large value in case some part can't get light
-        //m_program -> setUniformValue(m_lightPosLoc, QVector3D(0, 0, 7000));
-        m_program -> setUniformValue(m_lightPosLoc, QVector3D(-90, 90, -90));
+        m_program -> setUniformValue(m_lightPosLoc, QVector3D(0, 0, 7000));
+        //m_program -> setUniformValue(m_lightPosLoc, QVector3D(-90, 90, -90));
         m_program -> release();
     }
 
@@ -137,7 +139,7 @@ namespace base_cad
     {
         // project matrix
         m_proj.setToIdentity();
-        m_proj.perspective(25.f, GLfloat(width)/height, 0.2f, 1000.0f);
+        m_proj.perspective(20.f, GLfloat(width)/height, 0.05, 1000.0f);
     }
 
     void OpenGLView::mousePressEvent(QMouseEvent *event)
@@ -210,6 +212,49 @@ namespace base_cad
         module = m;
     }
 
+    void OpenGLView::setGeometryManager(GeometryManager *m)
+    {
+        geo_manager = m;
+
+        Module *tmp_module = geo_manager -> GetModule();
+        setModule(tmp_module);
+
+        copyContentDataFromModule();
+    }
+
+    void OpenGLView::copyContentDataFromModule()
+    {
+        if(module == nullptr) {
+            std::cerr<<__func__<<" Error: Module is empty."
+                <<std::endl;
+            exit(0);
+        }
+
+        const std::unordered_map<int, std::vector<float>> & triangles =
+            module -> GetModuleTriangles();
+        const std::unordered_map<int, QColor> & colors =
+            module -> GetModuleColors();
+
+        if(content_data_length > 0)
+            delete[] content_data;
+
+        content_data_length = module -> GetTriangleLength();
+        if(content_data_length <= 0) {
+            std::cerr<<__func__<<" Error: module has empty triangle array."
+                <<std::endl;
+            exit(0);
+        }
+
+        content_data = new float[content_data_length];
+
+        size_t index = 0;
+        for(auto &i: triangles){
+            for(auto &j: i.second) {
+                content_data[index++] = j;
+            }
+        }
+    }
+
     void OpenGLView::start_logo()
     {
         // clear buffer
@@ -239,7 +284,7 @@ namespace base_cad
 
         for(int i=0; i<content_data_length; i++)
         {
-            content_data[i] = fvec[i];
+            content_data[i] = fvec[i] * 0.5;
         }
     }
 }

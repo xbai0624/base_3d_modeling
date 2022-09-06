@@ -1,10 +1,13 @@
 #ifndef GEOMETRY_VIEW_H
 #define GEOMETRY_VIEW_H
 
-#include "OpenGLView.h"
+#include <QWidget>
 
 namespace base_cad
 {
+    class OpenGLView;
+    class GeometryManager;
+
     class GeometryView : public QWidget
     {
         Q_OBJECT
@@ -15,6 +18,7 @@ namespace base_cad
 
     private:
         OpenGLView *gl_view;
+        GeometryManager *geo_manager;
     };
 }
 

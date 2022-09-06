@@ -24,6 +24,7 @@ namespace base_cad
         const std::unordered_map<int, QColor> & GetModuleColors() const;
         void Clear();
         virtual void SetColor(QColor c);
+        int GetTriangleLength();
 
     protected:
         const std::unordered_map<int, Module*>& GetModules() const;

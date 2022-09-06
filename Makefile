@@ -57,6 +57,7 @@ SOURCES       = src/main.cpp \
 		src/Cube.cpp \
 		src/OpenGLView.cpp \
 		src/GeometryView.cpp \
+		src/GeometryManager.cpp \
 		src/UnitTest.cpp moc/moc_OpenGLView.cpp \
 		moc/moc_GeometryView.cpp
 OBJECTS       = obj/main.o \
@@ -64,6 +65,7 @@ OBJECTS       = obj/main.o \
 		obj/Cube.o \
 		obj/OpenGLView.o \
 		obj/GeometryView.o \
+		obj/GeometryManager.o \
 		obj/UnitTest.o \
 		obj/moc_OpenGLView.o \
 		obj/moc_GeometryView.o
@@ -147,11 +149,13 @@ DIST          = /../lib64/qt5/mkspecs/features/spec_pre.prf \
 		include/Cube.h \
 		include/OpenGLView.h \
 		include/GeometryView.h \
+		include/GeometryManager.h \
 		include/UnitTest.h src/main.cpp \
 		src/Module.cpp \
 		src/Cube.cpp \
 		src/OpenGLView.cpp \
 		src/GeometryView.cpp \
+		src/GeometryManager.cpp \
 		src/UnitTest.cpp
 QMAKE_TARGET  = main
 DESTDIR       = 
@@ -334,8 +338,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /../lib64/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents include/Module.h include/Cube.h include/OpenGLView.h include/GeometryView.h include/UnitTest.h $(DISTDIR)/
-	$(COPY_FILE) --parents src/main.cpp src/Module.cpp src/Cube.cpp src/OpenGLView.cpp src/GeometryView.cpp src/UnitTest.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents include/Module.h include/Cube.h include/OpenGLView.h include/GeometryView.h include/GeometryManager.h include/UnitTest.h $(DISTDIR)/
+	$(COPY_FILE) --parents src/main.cpp src/Module.cpp src/Cube.cpp src/OpenGLView.cpp src/GeometryView.cpp src/GeometryManager.cpp src/UnitTest.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -418,6 +422,9 @@ obj/OpenGLView.o: src/OpenGLView.cpp include/OpenGLView.h \
 obj/GeometryView.o: src/GeometryView.cpp include/GeometryView.h \
 		include/OpenGLView.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/GeometryView.o src/GeometryView.cpp
+
+obj/GeometryManager.o: src/GeometryManager.cpp include/GeometryManager.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/GeometryManager.o src/GeometryManager.cpp
 
 obj/UnitTest.o: src/UnitTest.cpp include/UnitTest.h \
 		include/Module.h \

@@ -28,6 +28,7 @@ HEADERS += \
     include/Cube.h \
     include/OpenGLView.h \
     include/GeometryView.h \
+    include/GeometryManager.h \
     include/UnitTest.h \
 
 SOURCES += \
@@ -36,4 +37,5 @@ SOURCES += \
     src/Cube.cpp \
     src/OpenGLView.cpp \
     src/GeometryView.cpp \
+    src/GeometryManager.cpp \
     src/UnitTest.cpp \
