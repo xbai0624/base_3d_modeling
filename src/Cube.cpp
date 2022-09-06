@@ -164,10 +164,10 @@ namespace base_cad
     {
         QMatrix4x4 T;
         T.setToIdentity();
+        T.translate(position);
         T.rotate(x_rot, 1, 0, 0);
         T.rotate(y_rot, 0, 1, 0);
         T.rotate(z_rot, 0, 0, 1);
-        T.translate(position);
 
         for(size_t i=0; i<8; i++) {
             QVector4D v(corner_coords[i], 1);
