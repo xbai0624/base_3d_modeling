@@ -27,7 +27,7 @@ namespace base_cad
     {
         if(path.size() <= 0)
         {
-            std::cerr<<__func__<<" Error: empty path."
+            std::cerr<<__PRETTY_FUNCTION__<<" Error: empty path."
                 <<std::endl;
             //exit(0); // debug
         }
@@ -78,5 +78,7 @@ namespace base_cad
         module -> AddModule(cube3);
         module -> AddModule(cube4);
         module -> AddModule(cube5);
+
+        module -> Transform(0., 0., 0.5, 90, 90, 0);
     }
 }

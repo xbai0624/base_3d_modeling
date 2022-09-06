@@ -225,7 +225,7 @@ namespace base_cad
     void OpenGLView::copyContentDataFromModule()
     {
         if(module == nullptr) {
-            std::cerr<<__func__<<" Error: Module is empty."
+            std::cerr<<__PRETTY_FUNCTION__<<" Error: Module is empty."
                 <<std::endl;
             exit(0);
         }
@@ -239,8 +239,11 @@ namespace base_cad
             delete[] content_data;
 
         content_data_length = module -> GetTriangleLength();
+        std::cout<<"INFO:: "<<__PRETTY_FUNCTION__<<": total triangle primitives to draw: "
+            <<content_data_length / 3 / 3 <<std::endl;
+
         if(content_data_length <= 0) {
-            std::cerr<<__func__<<" Error: module has empty triangle array."
+            std::cerr<<__PRETTY_FUNCTION__<<" Error: module has empty triangle array."
                 <<std::endl;
             exit(0);
         }

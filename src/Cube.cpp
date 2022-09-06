@@ -118,7 +118,7 @@ namespace base_cad
     {
         if(m_module_color.size() != 0)
         {
-            std::cerr<<__func__<<" Error: color list size() != 0,"<<std::endl
+            std::cerr<<__PRETTY_FUNCTION__<<" Error: color list size() != 0,"<<std::endl
                 <<"                color should be set at lowest level for primitive elements."
                 <<std::endl;
             exit(0);
@@ -246,7 +246,7 @@ namespace base_cad
 
         if(m_module_triangle_elements.size() != 0)
         {
-            std::cerr<<__func__<<" Error: triangle element array size() != 0,"<<std::endl
+            std::cerr<<__PRETTY_FUNCTION__<<" Error: triangle element array size() != 0,"<<std::endl
                 <<"                element array should be filled at lowest level only for primitive elements."
                 <<std::endl;
             exit(0);
@@ -268,7 +268,7 @@ namespace base_cad
     void Cube::FillModule()
     {
         if(!IsEmpty()) {
-            std::cerr<<__func__<<" Error: implementing a primitive cube, but its base class is not empty."
+            std::cerr<<__PRETTY_FUNCTION__<<" Error: implementing a primitive cube, but its base class is not empty."
                 <<std::endl;
             exit(0);
         }

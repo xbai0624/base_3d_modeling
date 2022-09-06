@@ -25,6 +25,8 @@ namespace base_cad
         void Clear();
         virtual void SetColor(QColor c);
         int GetTriangleLength();
+        void Transform(float x_pos, float y_pos, float z_pos,
+                float x_rot=0., float y_rot = 0., float z_rot = 0.);
 
     protected:
         const std::unordered_map<int, Module*>& GetModules() const;

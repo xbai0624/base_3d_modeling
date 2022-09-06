@@ -6,6 +6,7 @@
 
 #include "Module.h"
 #include <cassert>
+#include <QMatrix4x4>
 
 namespace base_cad
 {
@@ -150,5 +151,39 @@ namespace base_cad
         for(auto &i: m_module_triangles)
             length += (int)i.second.size();
         return length;
+    }
+
+    // transform the assembly as a whole
+    void Module::Transform(float x_pos, float y_pos, float z_pos,
+                float x_rot, float y_rot, float z_rot)
+    {
+        QMatrix4x4 T;
+        T.setToIdentity();
+        T.translate(x_pos, y_pos, z_pos);
+        T.rotate(x_rot, 1, 0, 0);
+        T.rotate(y_rot, 0, 1, 0);
+        T.rotate(z_rot, 0, 0, 1);
+
+        for(auto &i: m_module_triangles)
+        {
+            size_t unit_length = i.second.size();
+            if(unit_length <= 0)
+                continue;
+
+            assert(unit_length % 3 == 0);
+            size_t n = unit_length / 3;
+
+            std::vector<float> tmp;
+            for(size_t index=0; index<n; index++)
+            {
+                QVector4D v_tmp(i.second[3*index], i.second[3*index+1], i.second[3*index+2], 1);
+                v_tmp = T * v_tmp;
+
+                tmp.push_back(v_tmp.x()), tmp.push_back(v_tmp.y()), tmp.push_back(v_tmp.z());
+            }
+
+            m_module_triangles[i.first].clear();
+            m_module_triangles[i.first] = tmp;
+        }
     }
 }
