@@ -2,7 +2,8 @@
 
 varying highp vec3 vert;
 varying highp vec3 vertNormal;
-varying highp vec3 lightPos;
+
+uniform highp vec3 lightPos;
 
 void main(){
     highp vec3 L = normalize(lightPos - vert);

@@ -55,11 +55,18 @@ OBJECTS_DIR   = obj/
 SOURCES       = src/main.cpp \
 		src/Module.cpp \
 		src/Cube.cpp \
-		src/UnitTest.cpp 
+		src/OpenGLView.cpp \
+		src/GeometryView.cpp \
+		src/UnitTest.cpp moc/moc_OpenGLView.cpp \
+		moc/moc_GeometryView.cpp
 OBJECTS       = obj/main.o \
 		obj/Module.o \
 		obj/Cube.o \
-		obj/UnitTest.o
+		obj/OpenGLView.o \
+		obj/GeometryView.o \
+		obj/UnitTest.o \
+		obj/moc_OpenGLView.o \
+		obj/moc_GeometryView.o
 DIST          = /../lib64/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib64/qt5/mkspecs/common/unix.conf \
 		/usr/lib64/qt5/mkspecs/common/linux.conf \
@@ -138,9 +145,13 @@ DIST          = /../lib64/qt5/mkspecs/features/spec_pre.prf \
 		/../lib64/qt5/mkspecs/features/lex.prf \
 		base_cad.pro include/Module.h \
 		include/Cube.h \
+		include/OpenGLView.h \
+		include/GeometryView.h \
 		include/UnitTest.h src/main.cpp \
 		src/Module.cpp \
 		src/Cube.cpp \
+		src/OpenGLView.cpp \
+		src/GeometryView.cpp \
 		src/UnitTest.cpp
 QMAKE_TARGET  = main
 DESTDIR       = 
@@ -323,8 +334,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /../lib64/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents include/Module.h include/Cube.h include/UnitTest.h $(DISTDIR)/
-	$(COPY_FILE) --parents src/main.cpp src/Module.cpp src/Cube.cpp src/UnitTest.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents include/Module.h include/Cube.h include/OpenGLView.h include/GeometryView.h include/UnitTest.h $(DISTDIR)/
+	$(COPY_FILE) --parents src/main.cpp src/Module.cpp src/Cube.cpp src/OpenGLView.cpp src/GeometryView.cpp src/UnitTest.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -356,8 +367,20 @@ compiler_moc_predefs_clean:
 moc/moc_predefs.h: /../lib64/qt5/mkspecs/features/data/dummy.cpp
 	g++ -pipe -std=c++17 -O2 -Wall -Wextra -dM -E -o moc/moc_predefs.h /../lib64/qt5/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all:
+compiler_moc_header_make_all: moc/moc_OpenGLView.cpp moc/moc_GeometryView.cpp
 compiler_moc_header_clean:
+	-$(DEL_FILE) moc/moc_OpenGLView.cpp moc/moc_GeometryView.cpp
+moc/moc_OpenGLView.cpp: include/OpenGLView.h \
+		moc/moc_predefs.h \
+		/../lib64/qt5/bin/moc
+	/../lib64/qt5/bin/moc $(DEFINES) --include /home/xinzhan/test/base_cad/moc/moc_predefs.h -I/../lib64/qt5/mkspecs/linux-g++ -I/home/xinzhan/test/base_cad -I/home/xinzhan/test/base_cad/include -I/usr/include/qt5 -I/usr/include/qt5/QtOpenGL -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtCore -I/usr/include/c++/8 -I/usr/include/c++/8/x86_64-redhat-linux -I/usr/include/c++/8/backward -I/usr/lib/gcc/x86_64-redhat-linux/8/include -I/usr/local/include -I/usr/include include/OpenGLView.h -o moc/moc_OpenGLView.cpp
+
+moc/moc_GeometryView.cpp: include/GeometryView.h \
+		include/OpenGLView.h \
+		moc/moc_predefs.h \
+		/../lib64/qt5/bin/moc
+	/../lib64/qt5/bin/moc $(DEFINES) --include /home/xinzhan/test/base_cad/moc/moc_predefs.h -I/../lib64/qt5/mkspecs/linux-g++ -I/home/xinzhan/test/base_cad -I/home/xinzhan/test/base_cad/include -I/usr/include/qt5 -I/usr/include/qt5/QtOpenGL -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtCore -I/usr/include/c++/8 -I/usr/include/c++/8/x86_64-redhat-linux -I/usr/include/c++/8/backward -I/usr/lib/gcc/x86_64-redhat-linux/8/include -I/usr/local/include -I/usr/include include/GeometryView.h -o moc/moc_GeometryView.cpp
+
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
 compiler_moc_source_make_all:
@@ -370,12 +393,15 @@ compiler_yacc_impl_make_all:
 compiler_yacc_impl_clean:
 compiler_lex_make_all:
 compiler_lex_clean:
-compiler_clean: compiler_moc_predefs_clean 
+compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean 
 
 ####### Compile
 
 obj/main.o: src/main.cpp include/UnitTest.h \
-		include/Module.h
+		include/Module.h \
+		include/Cube.h \
+		include/GeometryView.h \
+		include/OpenGLView.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/main.o src/main.cpp
 
 obj/Module.o: src/Module.cpp include/Module.h
@@ -385,9 +411,24 @@ obj/Cube.o: src/Cube.cpp include/Cube.h \
 		include/Module.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/Cube.o src/Cube.cpp
 
-obj/UnitTest.o: src/UnitTest.cpp include/UnitTest.h \
+obj/OpenGLView.o: src/OpenGLView.cpp include/OpenGLView.h \
 		include/Module.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/OpenGLView.o src/OpenGLView.cpp
+
+obj/GeometryView.o: src/GeometryView.cpp include/GeometryView.h \
+		include/OpenGLView.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/GeometryView.o src/GeometryView.cpp
+
+obj/UnitTest.o: src/UnitTest.cpp include/UnitTest.h \
+		include/Module.h \
+		include/Cube.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/UnitTest.o src/UnitTest.cpp
+
+obj/moc_OpenGLView.o: moc/moc_OpenGLView.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/moc_OpenGLView.o moc/moc_OpenGLView.cpp
+
+obj/moc_GeometryView.o: moc/moc_GeometryView.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/moc_GeometryView.o moc/moc_GeometryView.cpp
 
 ####### Install
 

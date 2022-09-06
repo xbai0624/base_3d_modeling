@@ -26,10 +26,14 @@ OBJECTS_DIR = obj
 HEADERS += \
     include/Module.h \
     include/Cube.h \
+    include/OpenGLView.h \
+    include/GeometryView.h \
     include/UnitTest.h \
 
 SOURCES += \
     src/main.cpp \
     src/Module.cpp \
     src/Cube.cpp \
+    src/OpenGLView.cpp \
+    src/GeometryView.cpp \
     src/UnitTest.cpp \
