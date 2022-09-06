@@ -1,3 +1,9 @@
+////////////////////////////////////////////////////////////////////////////////
+// A class for locading geometry from text files                              //
+//                                                                            //
+//        Xinzhan Bai, Sep 06, 2022                                           //
+////////////////////////////////////////////////////////////////////////////////
+
 #include "GeometryManager.h"
 #include "Module.h"
 #include "Cube.h"
@@ -59,15 +65,15 @@ namespace base_cad
         cube2 -> SetColor(QColor(0.5, 0.5, 0.5));
         cube2 -> Init();
 
-        Cube *cube3 = new Cube(0.2, 0.1, 0.25, 0.5, -0.5, 0.);
+        Cube *cube3 = new Cube(0.02, 0.1, 0.25, 0.5, -0.5, 0.);
         cube3 -> SetColor(QColor(0.5, 0.5, 0.5));
         cube3 -> Init();
 
-        Cube *cube4 = new Cube(0.2, 0.1, 0.25, 0., 0., -0.5);
+        Cube *cube4 = new Cube(0.2, 0.01, 0.25, 0., 0., -0.5);
         cube4 -> SetColor(QColor(0.5, 0.5, 0.5));
         cube4 -> Init();
 
-        Cube *cube5 = new Cube(0.2, 0.1, 0.25, 0., 0., 0.5);
+        Cube *cube5 = new Cube(0.2, 0.1, 0.025, 0., 0., 0.5);
         cube5 -> SetColor(QColor(0.5, 0.5, 0.5));
         cube5 -> SetRotation(45, 45, 45);
         cube5 -> Init();

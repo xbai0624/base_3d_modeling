@@ -1,3 +1,9 @@
+////////////////////////////////////////////////////////////////////////////////
+// A class for setting up OpenGL enviroments                                  //
+//                                                                            //
+//        Xinzhan Bai, Sep 06, 2022                                           //
+////////////////////////////////////////////////////////////////////////////////
+
 #include "OpenGLView.h"
 #include <QOpenGLShaderProgram>
 #include <QMouseEvent>

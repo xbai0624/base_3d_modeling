@@ -1,3 +1,10 @@
+////////////////////////////////////////////////////////////////////////////////
+// This is the Main Window Class, an Entrance class which contains            //
+// both GeometryManager and OpenGLView class                                  //
+//                                                                            //
+//        Xinzhan Bai, Sep 06, 2022                                           //
+////////////////////////////////////////////////////////////////////////////////
+
 #include "GeometryView.h"
 #include <QHBoxLayout>
 
