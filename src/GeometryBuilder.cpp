@@ -34,41 +34,92 @@ namespace base_cad
         return assembly;
     }
 
+    void GeometryBuilder::SetWorldHalfW(float w)
+    {
+        world_halfw = w;
+        unit = 1./w;
+    }
+
     void GeometryBuilder::SetupVolume()
     {
+        SetWorldHalfW(90);
+
         if(assembly == nullptr)
             assembly = new Module();
         else
             assembly->Clear();
 
-        // an infn xy chamber
-        Cube an_infnchamber; 
+        assembly = build_assembly_test();
+    }
 
+    Module* GeometryBuilder::build_chamber_test()
+    {
         // an uva xy chamber
-        Cube top_plane(0.5/2., 0.417/2., 0.08/2, 0, -0.03, 0.04/2);
+        Cube top_plane(50*unit/2., 40*unit/2., 5*unit/2, 0, -3*unit, 4*unit/2);
         top_plane.SetColor(QColor(0, 255, 255));
         top_plane.Init();
-        Cube bottom_plane(0.65/2., 0.48/2., 0.01/2., 0, 0, -0.01/2);
-        bottom_plane.SetColor(QColor(255, 102, 0));
+        Cube bottom_plane(65*unit/2., 48*unit/2., 1*unit/2., 0, 0, -1*unit/2);
+        bottom_plane.SetColor(QColor(0, 128, 12));
         bottom_plane.Init();
 
-        Module uvaxychamber;
-        uvaxychamber.AddModule(&top_plane); 
-        uvaxychamber.AddModule(&bottom_plane);
+        Module *uvaxychamber = new Module();
+        uvaxychamber -> AddModule(&top_plane); 
+        uvaxychamber -> AddModule(&bottom_plane);
 
-        // an apv volume unit
-        float df = 0.01;
-        Cube an_apv((0.05-df)/2., (0.04-df)/2., 0.005);
+        return uvaxychamber;
+    }
+
+    Module *GeometryBuilder::build_apv_test()
+    {
+        Cube * apv = new Cube(3 * unit, 1.5 * unit, 0.5*unit);
+        apv -> SetColor(QColor(51, 102, 255));
+        apv -> Init();
+        return apv;
+    }
+
+    Module *GeometryBuilder::build_chamber_apv_test()
+    {
+        Module *chamber = build_chamber_test();
+        Module *apv = build_apv_test();
+
+        Module *res = new Module();
+
+        res -> AddModule(chamber);
+        // 12-slot
+        for(int i=0; i<12; i++) {
+            Module tmp(*apv);
+            tmp.Transform(-25*unit + 3*unit + i*4*unit, 20*unit, 2*unit, 0, 0, 90);
+            res -> AddModule(&tmp);
+        }
+        // left 5-slot
+        for(int i=0; i<5; i++) {
+            Module tmp(*apv);
+            tmp.Transform(-28*unit, -25*unit + 4*unit + i*4*unit, 0);
+            res -> AddModule(&tmp);
+        }
+        // right 5-slot
+        for(int i=0; i<5; i++) {
+            Module tmp(*apv);
+            tmp.Transform(28*unit, i*4*unit, 0);
+            res -> AddModule(&tmp);
+        }
+ 
+        return res;
+    }
+
+    Module *GeometryBuilder::build_layer_test()
+    {
+        Module *uvaxychamber = build_chamber_apv_test();
 
         // an uva layer
-        float dy = 0.56;
-        Module *l1m0 = new Module(uvaxychamber);
+        float dy = 56*unit;
+        Module *l1m0 = new Module(*uvaxychamber);
         l1m0 -> Transform(0, -dy, 0, 0, 0, 180);
-        Module *l1m1 = new Module(uvaxychamber);
-        l1m1 -> Transform(0, 0, 0, 0, 0, 180);
-        Module *l1m2 = new Module(uvaxychamber);
+        Module *l1m1 = new Module(*uvaxychamber);
+        l1m1 -> Transform(0, 0, 0, 20, 0, 180);
+        Module *l1m2 = new Module(*uvaxychamber);
         l1m2 -> Transform(0, dy, 0);
-        Module *l1m3 = new Module(uvaxychamber);
+        Module *l1m3 = new Module(*uvaxychamber);
         l1m3 -> Transform(0, 2*dy, 0);
 
         Module *layer = new Module();
@@ -78,34 +129,62 @@ namespace base_cad
         layer -> AddModule(l1m2);
         layer -> AddModule(l1m3);
 
+        return layer;
+    }
+
+    Module *GeometryBuilder::build_assembly_test()
+    {
+        Module *layer = build_layer_test();
+
         // entire assembly
-        float x_rot = 10., y_rot = -65., z_rot = -5.;
+        float x_rot = 0., y_rot = -90., z_rot = 0.;
         Module *layer1 = new Module(*layer);
+        z_rot = 20;
         layer1 -> Transform(0., 0, 0, x_rot, y_rot, z_rot);
+        z_rot = 0.;
+
         Module *layer2 = new Module(*layer);
-        layer2 -> Transform(0.5, 0, 0, x_rot, y_rot, z_rot);
+        y_rot += 25;
+        layer2 -> Transform(50*unit, 0, 0, x_rot, y_rot, z_rot);
+        y_rot = -90.;
+
         Module *layer3 = new Module(*layer);
-        layer3 -> Transform(1.0, 0, 0, x_rot, y_rot, z_rot);
+        layer3 -> Transform(100*unit, 0, 0, x_rot, y_rot, z_rot);
+
         Module *layer4 = new Module(*layer);
-        layer4 -> Transform(1.5, 0, 0, x_rot, y_rot, z_rot);
+        x_rot = 45.;
+        layer4 -> Transform(150*unit, 0, 0, x_rot, y_rot, z_rot);
+        x_rot = 0.;
+
         Module *layer5 = new Module(*layer);
-        layer5 -> Transform(-0.5, 0, 0, x_rot, y_rot, z_rot);
+        layer5 -> Transform(-50*unit, 0, 0, x_rot, y_rot, z_rot);
+
         Module *layer6 = new Module(*layer);
-        layer6 -> Transform(-1.0, 0, 0, x_rot, y_rot, z_rot);
+        x_rot = 70.;
+        layer6 -> Transform(-100*unit, 0, 0, x_rot, y_rot, z_rot);
+        x_rot = 0.;
+
         Module *layer7 = new Module(*layer);
-        layer7 -> Transform(-1.5, 0, 0, x_rot, y_rot, z_rot);
+        z_rot = -25.;
+        layer7 -> Transform(-150*unit, 0, 0, x_rot, y_rot, z_rot);
+        z_rot = 0.;
+
         Module *layer8 = new Module(*layer);
-        layer8 -> Transform(-2.0, 0, 0, x_rot, y_rot, z_rot);
+        x_rot = -30;
+        layer8 -> Transform(-200*unit, 0, 0, x_rot, y_rot, z_rot);
 
-        assembly -> AddModule(layer1);
-        assembly -> AddModule(layer2);
-        assembly -> AddModule(layer3);
-        assembly -> AddModule(layer4);
-        assembly -> AddModule(layer5);
-        assembly -> AddModule(layer6);
-        assembly -> AddModule(layer7);
-        assembly -> AddModule(layer8);
+        Module * as = new Module();
+        as -> AddModule(layer1);
+        as -> AddModule(layer2);
+        as -> AddModule(layer3);
+        as -> AddModule(layer4);
+        as -> AddModule(layer5);
+        as -> AddModule(layer6);
+        as -> AddModule(layer7);
+        as -> AddModule(layer8);
 
-        assembly -> Transform(0.25, -0.25, 0);
+        as -> Transform(25*unit, -25*unit, 0);
+
+        return as;
     }
 }

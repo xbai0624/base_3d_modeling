@@ -91,7 +91,7 @@ namespace base_cad
         setupVertexAttribs();
 
         // set light position to a large value in case some part can't get light
-        m_program -> setUniformValue(m_lightPosLoc, QVector3D(0, 0, 7000));
+        m_program -> setUniformValue(m_lightPosLoc, QVector3D(-900, 900, 7000));
         //m_program -> setUniformValue(m_lightPosLoc, QVector3D(-90, 90, -90));
         m_program -> release();
     }

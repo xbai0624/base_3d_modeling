@@ -9,6 +9,7 @@
 #include "Cube.h"
 #include "APVMapping.h"
 #include "APVStruct.h"
+#include <QColor>
 
 namespace std {
     template<> struct hash<std::pair<int, int>>
@@ -33,16 +34,28 @@ namespace base_cad
 
         void SetTextFile(const char* path);
         Module * GetCompleteAssembly() const;
+        void SetWorldHalfW(float w);
 
     protected:
         void SetupVolume();
 
     private:
+        Module * build_chamber_test();
+        Module * build_apv_test();
+        Module * build_chamber_apv_test();
+        Module * build_layer_test();
+        Module * build_assembly_test();
+
+    private:
         apv_mapping::Mapping *map = nullptr;
         std::string path;
         std::unordered_map<apv_mapping::APVAddress, Cube> apv_volumes;
+        std::unordered_map<apv_mapping::APVAddress, QColor> apv_color;
         std::unordered_map<ChamberAddress, Cube> chamber_volumes;
         Module *assembly = nullptr;
+
+        float world_halfw = 1000;
+        float unit = 0.001;
     };
 }
 
