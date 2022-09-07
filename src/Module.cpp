@@ -8,6 +8,7 @@
 #include <cassert>
 #include <QMatrix4x4>
 #include <iostream>
+
 namespace base_cad
 {
     // default ctor
@@ -22,7 +23,7 @@ namespace base_cad
         m_module_triangle_elements(m.m_module_triangle_elements),
         m_module_color(m.m_module_color)
     {
-        // copy modules referenced by pointers
+        // copy all modules referenced by pointers
         if(m.HasChild())
         {
             for(auto &i: m.m_module)
@@ -116,7 +117,7 @@ namespace base_cad
             assert(m_module_triangle_elements.size() == index);
             assert(m_module_color.size() == index);
 
-            // AddModule will make a copy of the original moudle
+            // AddModule() will make a copy of the original moudle
             m_module[index] = new Module(*m);
 
             const std::unordered_map<int, std::vector<float>> & triangles =

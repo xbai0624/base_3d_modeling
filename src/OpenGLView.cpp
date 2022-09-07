@@ -72,6 +72,7 @@ namespace base_cad
         m_program -> addShaderFromSourceFile(QOpenGLShader::Fragment, fragment_shader_file);
         m_program -> bindAttributeLocation("vertex", 0);
         m_program -> bindAttributeLocation("normal", 1);
+        m_program -> bindAttributeLocation("color", 2);
         m_program -> link();
 
         m_program -> bind();
@@ -101,11 +102,14 @@ namespace base_cad
         QOpenGLFunctions *f = QOpenGLContext::currentContext() -> functions();
         f -> glEnableVertexAttribArray(0);
         f -> glEnableVertexAttribArray(1);
+        f -> glEnableVertexAttribArray(2);
 
-        f -> glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(GLfloat),
+        f -> glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6*sizeof(GLfloat),
                 nullptr);
-        f -> glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3*sizeof(GLfloat),
+        f -> glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6*sizeof(GLfloat),
                 reinterpret_cast<void*>(0*sizeof(GLfloat)));
+        f -> glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 6*sizeof(GLfloat),
+                reinterpret_cast<void*>(3*sizeof(GLfloat)));
 
         m_data.release();
     }
@@ -245,6 +249,7 @@ namespace base_cad
             delete[] content_data;
 
         content_data_length = module -> GetTriangleLength();
+        // each vertex has 3 points, each triangle has 3 vertices
         std::cout<<"INFO:: "<<__PRETTY_FUNCTION__<<": total triangle primitives to draw: "
             <<content_data_length / 3 / 3 <<std::endl;
 
@@ -254,12 +259,26 @@ namespace base_cad
             exit(0);
         }
 
-        content_data = new float[content_data_length];
+        // double length to accormodate color
+        content_data = new float[2*content_data_length];
+        content_data_length = 2 * content_data_length;
 
+        // copy vertex and color
         size_t index = 0;
-        for(auto &i: triangles){
-            for(auto &j: i.second) {
+        for(auto &i: triangles)
+        {
+            float r = colors.at(i.first).redF();
+            float g = colors.at(i.first).greenF();
+            float b = colors.at(i.first).blueF();
+
+            for(auto &j: i.second)
+            {
                 content_data[index++] = j;
+                if((int)index %3 == 0) {
+                    content_data[index++] = r;
+                    content_data[index++] = g;
+                    content_data[index++] = b;
+                }
             }
         }
     }

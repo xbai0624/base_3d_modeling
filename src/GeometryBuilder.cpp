@@ -46,10 +46,10 @@ namespace base_cad
 
         // an uva xy chamber
         Cube top_plane(0.5/2., 0.417/2., 0.08/2, 0, -0.03, 0.04/2);
-        top_plane.SetColor(QColor(1, 1, 1));
+        top_plane.SetColor(QColor(0, 255, 255));
         top_plane.Init();
         Cube bottom_plane(0.65/2., 0.48/2., 0.01/2., 0, 0, -0.01/2);
-        bottom_plane.SetColor(QColor(1, 1, 1));
+        bottom_plane.SetColor(QColor(255, 102, 0));
         bottom_plane.Init();
 
         Module uvaxychamber;
