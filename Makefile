@@ -17,7 +17,7 @@ CXX           = g++
 DEFINES       = -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -O2 -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
 CXXFLAGS      = -pipe -std=c++17 -O2 -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
-INCPATH       = -I. -Iinclude -I/usr/include/qt5 -I/usr/include/qt5/QtOpenGL -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtCore -Imoc -I/../lib64/qt5/mkspecs/linux-g++
+INCPATH       = -I. -Iinclude -Iapv_mapping -I/usr/include/qt5 -I/usr/include/qt5/QtOpenGL -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtCore -Imoc -I/../lib64/qt5/mkspecs/linux-g++
 QMAKE         = /usr/bin/qmake-qt5
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -58,7 +58,10 @@ SOURCES       = src/main.cpp \
 		src/OpenGLView.cpp \
 		src/GeometryView.cpp \
 		src/GeometryManager.cpp \
-		src/UnitTest.cpp moc/moc_OpenGLView.cpp \
+		src/ConfigReader.cpp \
+		src/UnitTest.cpp \
+		apv_mapping/APVMapping.cpp \
+		apv_mapping/APVStruct.cpp moc/moc_OpenGLView.cpp \
 		moc/moc_GeometryView.cpp
 OBJECTS       = obj/main.o \
 		obj/Module.o \
@@ -66,7 +69,10 @@ OBJECTS       = obj/main.o \
 		obj/OpenGLView.o \
 		obj/GeometryView.o \
 		obj/GeometryManager.o \
+		obj/ConfigReader.o \
 		obj/UnitTest.o \
+		obj/APVMapping.o \
+		obj/APVStruct.o \
 		obj/moc_OpenGLView.o \
 		obj/moc_GeometryView.o
 DIST          = /../lib64/qt5/mkspecs/features/spec_pre.prf \
@@ -150,13 +156,19 @@ DIST          = /../lib64/qt5/mkspecs/features/spec_pre.prf \
 		include/OpenGLView.h \
 		include/GeometryView.h \
 		include/GeometryManager.h \
-		include/UnitTest.h src/main.cpp \
+		include/ConfigReader.h \
+		include/UnitTest.h \
+		apv_mapping/APVMapping.h \
+		apv_mapping/APVStruct.h src/main.cpp \
 		src/Module.cpp \
 		src/Cube.cpp \
 		src/OpenGLView.cpp \
 		src/GeometryView.cpp \
 		src/GeometryManager.cpp \
-		src/UnitTest.cpp
+		src/ConfigReader.cpp \
+		src/UnitTest.cpp \
+		apv_mapping/APVMapping.cpp \
+		apv_mapping/APVStruct.cpp
 QMAKE_TARGET  = main
 DESTDIR       = 
 TARGET        = main
@@ -338,8 +350,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /../lib64/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents include/Module.h include/Cube.h include/OpenGLView.h include/GeometryView.h include/GeometryManager.h include/UnitTest.h $(DISTDIR)/
-	$(COPY_FILE) --parents src/main.cpp src/Module.cpp src/Cube.cpp src/OpenGLView.cpp src/GeometryView.cpp src/GeometryManager.cpp src/UnitTest.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents include/Module.h include/Cube.h include/OpenGLView.h include/GeometryView.h include/GeometryManager.h include/ConfigReader.h include/UnitTest.h apv_mapping/APVMapping.h apv_mapping/APVStruct.h $(DISTDIR)/
+	$(COPY_FILE) --parents src/main.cpp src/Module.cpp src/Cube.cpp src/OpenGLView.cpp src/GeometryView.cpp src/GeometryManager.cpp src/ConfigReader.cpp src/UnitTest.cpp apv_mapping/APVMapping.cpp apv_mapping/APVStruct.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -377,13 +389,12 @@ compiler_moc_header_clean:
 moc/moc_OpenGLView.cpp: include/OpenGLView.h \
 		moc/moc_predefs.h \
 		/../lib64/qt5/bin/moc
-	/../lib64/qt5/bin/moc $(DEFINES) --include /home/xinzhan/test/base_cad/moc/moc_predefs.h -I/../lib64/qt5/mkspecs/linux-g++ -I/home/xinzhan/test/base_cad -I/home/xinzhan/test/base_cad/include -I/usr/include/qt5 -I/usr/include/qt5/QtOpenGL -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtCore -I/usr/include/c++/8 -I/usr/include/c++/8/x86_64-redhat-linux -I/usr/include/c++/8/backward -I/usr/lib/gcc/x86_64-redhat-linux/8/include -I/usr/local/include -I/usr/include include/OpenGLView.h -o moc/moc_OpenGLView.cpp
+	/../lib64/qt5/bin/moc $(DEFINES) --include /home/xinzhan/test/base_cad/moc/moc_predefs.h -I/../lib64/qt5/mkspecs/linux-g++ -I/home/xinzhan/test/base_cad -I/home/xinzhan/test/base_cad/include -I/home/xinzhan/test/base_cad/apv_mapping -I/usr/include/qt5 -I/usr/include/qt5/QtOpenGL -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtCore -I/usr/include/c++/8 -I/usr/include/c++/8/x86_64-redhat-linux -I/usr/include/c++/8/backward -I/usr/lib/gcc/x86_64-redhat-linux/8/include -I/usr/local/include -I/usr/include include/OpenGLView.h -o moc/moc_OpenGLView.cpp
 
 moc/moc_GeometryView.cpp: include/GeometryView.h \
-		include/OpenGLView.h \
 		moc/moc_predefs.h \
 		/../lib64/qt5/bin/moc
-	/../lib64/qt5/bin/moc $(DEFINES) --include /home/xinzhan/test/base_cad/moc/moc_predefs.h -I/../lib64/qt5/mkspecs/linux-g++ -I/home/xinzhan/test/base_cad -I/home/xinzhan/test/base_cad/include -I/usr/include/qt5 -I/usr/include/qt5/QtOpenGL -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtCore -I/usr/include/c++/8 -I/usr/include/c++/8/x86_64-redhat-linux -I/usr/include/c++/8/backward -I/usr/lib/gcc/x86_64-redhat-linux/8/include -I/usr/local/include -I/usr/include include/GeometryView.h -o moc/moc_GeometryView.cpp
+	/../lib64/qt5/bin/moc $(DEFINES) --include /home/xinzhan/test/base_cad/moc/moc_predefs.h -I/../lib64/qt5/mkspecs/linux-g++ -I/home/xinzhan/test/base_cad -I/home/xinzhan/test/base_cad/include -I/home/xinzhan/test/base_cad/apv_mapping -I/usr/include/qt5 -I/usr/include/qt5/QtOpenGL -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtCore -I/usr/include/c++/8 -I/usr/include/c++/8/x86_64-redhat-linux -I/usr/include/c++/8/backward -I/usr/lib/gcc/x86_64-redhat-linux/8/include -I/usr/local/include -I/usr/include include/GeometryView.h -o moc/moc_GeometryView.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -404,8 +415,7 @@ compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean
 obj/main.o: src/main.cpp include/UnitTest.h \
 		include/Module.h \
 		include/Cube.h \
-		include/GeometryView.h \
-		include/OpenGLView.h
+		include/GeometryView.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/main.o src/main.cpp
 
 obj/Module.o: src/Module.cpp include/Module.h
@@ -416,20 +426,34 @@ obj/Cube.o: src/Cube.cpp include/Cube.h \
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/Cube.o src/Cube.cpp
 
 obj/OpenGLView.o: src/OpenGLView.cpp include/OpenGLView.h \
-		include/Module.h
+		include/Module.h \
+		include/GeometryManager.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/OpenGLView.o src/OpenGLView.cpp
 
 obj/GeometryView.o: src/GeometryView.cpp include/GeometryView.h \
-		include/OpenGLView.h
+		include/OpenGLView.h \
+		include/GeometryManager.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/GeometryView.o src/GeometryView.cpp
 
-obj/GeometryManager.o: src/GeometryManager.cpp include/GeometryManager.h
+obj/GeometryManager.o: src/GeometryManager.cpp include/GeometryManager.h \
+		include/Module.h \
+		include/Cube.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/GeometryManager.o src/GeometryManager.cpp
+
+obj/ConfigReader.o: src/ConfigReader.cpp include/ConfigReader.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/ConfigReader.o src/ConfigReader.cpp
 
 obj/UnitTest.o: src/UnitTest.cpp include/UnitTest.h \
 		include/Module.h \
 		include/Cube.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/UnitTest.o src/UnitTest.cpp
+
+obj/APVMapping.o: apv_mapping/APVMapping.cpp apv_mapping/APVMapping.h \
+		apv_mapping/APVStruct.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/APVMapping.o apv_mapping/APVMapping.cpp
+
+obj/APVStruct.o: apv_mapping/APVStruct.cpp apv_mapping/APVStruct.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/APVStruct.o apv_mapping/APVStruct.cpp
 
 obj/moc_OpenGLView.o: moc/moc_OpenGLView.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/moc_OpenGLView.o moc/moc_OpenGLView.cpp

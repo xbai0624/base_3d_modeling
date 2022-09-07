@@ -2,6 +2,7 @@
 #define __GEOMETRY_MANAGER_H__
 
 #include <string>
+#include "ConfigReader.h"
 
 namespace base_cad
 {
@@ -21,10 +22,13 @@ namespace base_cad
     protected:
         void load_text_file();
         void convert_to_module();
+        void convert_to_module_test();
 
     private:
         std::string path;
         Module *module = nullptr;
+
+        ConfigReader *config_reader = nullptr;
     };
 }
 

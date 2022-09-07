@@ -40,7 +40,7 @@ namespace base_cad
 
     QSize OpenGLView::sizeHint() const
     {
-        return QSize(500, 500);
+        return QSize(1000, 900);
     }
 
     void OpenGLView::cleanup()

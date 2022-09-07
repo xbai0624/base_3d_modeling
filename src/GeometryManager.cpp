@@ -40,13 +40,26 @@ namespace base_cad
 
         load_text_file();
         convert_to_module();
+        //convert_to_module_test();
     }
 
     void GeometryManager::load_text_file()
     {
+        if(config_reader == nullptr)
+            config_reader = new ConfigReader();
     }
 
     void GeometryManager::convert_to_module()
+    {
+        config_reader -> ReadAPVMapping("database/gem_map_HALL_GeN-RP_Inline_All.txt");
+
+        if(module != nullptr)
+            module -> Clear();
+
+        module = config_reader -> GetCompleteAssembly();
+    }
+
+    void GeometryManager::convert_to_module_test()
     {
         if(module == nullptr)
             module = new Module();
