@@ -22,7 +22,7 @@ namespace base_cad
         m_module_triangle_elements(m.m_module_triangle_elements),
         m_module_color(m.m_module_color)
     {
-        // copy module
+        // copy modules referenced by pointers
         if(m.HasChild())
         {
             for(auto &i: m.m_module)
@@ -32,7 +32,7 @@ namespace base_cad
         }
         else
         {
-            m_module[0] = this;
+            m_module[0] = this; // if no child modules, then a module points to itself
         }
     }
 
