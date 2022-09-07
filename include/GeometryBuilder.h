@@ -1,5 +1,5 @@
-#ifndef CONFIG_READER_H
-#define CONFIG_READER_H
+#ifndef GEOMETRY_BUILDER_H
+#define GEOMETRY_BUILDER_H
 
 #include <string>
 #include <unordered_map>
@@ -25,13 +25,13 @@ namespace base_cad
 {
     using ChamberAddress = std::pair<int, int>; // layer id, module position
 
-    class ConfigReader
+    class GeometryBuilder
     {
     public:
-        ConfigReader();
-        ~ConfigReader();
+        GeometryBuilder();
+        ~GeometryBuilder();
 
-        void ReadAPVMapping(const char* path);
+        void SetTextFile(const char* path);
         Module * GetCompleteAssembly() const;
 
     protected:

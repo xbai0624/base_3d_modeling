@@ -2,7 +2,7 @@
 #define __GEOMETRY_MANAGER_H__
 
 #include <string>
-#include "ConfigReader.h"
+#include "GeometryBuilder.h"
 
 namespace base_cad
 {
@@ -28,7 +28,7 @@ namespace base_cad
         std::string path;
         Module *module = nullptr;
 
-        ConfigReader *config_reader = nullptr;
+        GeometryBuilder *geo_builder = nullptr;
     };
 }
 

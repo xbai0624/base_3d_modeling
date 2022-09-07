@@ -29,7 +29,7 @@ HEADERS += \
            include/OpenGLView.h \
            include/GeometryView.h \
            include/GeometryManager.h \
-           include/ConfigReader.h \
+           include/GeometryBuilder.h \
            include/UnitTest.h \
 
 SOURCES += \
@@ -39,7 +39,7 @@ SOURCES += \
            src/OpenGLView.cpp \
            src/GeometryView.cpp \
            src/GeometryManager.cpp \
-           src/ConfigReader.cpp \
+           src/GeometryBuilder.cpp \
            src/UnitTest.cpp \
 
 # subsystem input

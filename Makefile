@@ -58,7 +58,7 @@ SOURCES       = src/main.cpp \
 		src/OpenGLView.cpp \
 		src/GeometryView.cpp \
 		src/GeometryManager.cpp \
-		src/ConfigReader.cpp \
+		src/GeometryBuilder.cpp \
 		src/UnitTest.cpp \
 		apv_mapping/APVMapping.cpp \
 		apv_mapping/APVStruct.cpp moc/moc_OpenGLView.cpp \
@@ -69,7 +69,7 @@ OBJECTS       = obj/main.o \
 		obj/OpenGLView.o \
 		obj/GeometryView.o \
 		obj/GeometryManager.o \
-		obj/ConfigReader.o \
+		obj/GeometryBuilder.o \
 		obj/UnitTest.o \
 		obj/APVMapping.o \
 		obj/APVStruct.o \
@@ -156,7 +156,7 @@ DIST          = /../lib64/qt5/mkspecs/features/spec_pre.prf \
 		include/OpenGLView.h \
 		include/GeometryView.h \
 		include/GeometryManager.h \
-		include/ConfigReader.h \
+		include/GeometryBuilder.h \
 		include/UnitTest.h \
 		apv_mapping/APVMapping.h \
 		apv_mapping/APVStruct.h src/main.cpp \
@@ -165,7 +165,7 @@ DIST          = /../lib64/qt5/mkspecs/features/spec_pre.prf \
 		src/OpenGLView.cpp \
 		src/GeometryView.cpp \
 		src/GeometryManager.cpp \
-		src/ConfigReader.cpp \
+		src/GeometryBuilder.cpp \
 		src/UnitTest.cpp \
 		apv_mapping/APVMapping.cpp \
 		apv_mapping/APVStruct.cpp
@@ -350,8 +350,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /../lib64/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents include/Module.h include/Cube.h include/OpenGLView.h include/GeometryView.h include/GeometryManager.h include/ConfigReader.h include/UnitTest.h apv_mapping/APVMapping.h apv_mapping/APVStruct.h $(DISTDIR)/
-	$(COPY_FILE) --parents src/main.cpp src/Module.cpp src/Cube.cpp src/OpenGLView.cpp src/GeometryView.cpp src/GeometryManager.cpp src/ConfigReader.cpp src/UnitTest.cpp apv_mapping/APVMapping.cpp apv_mapping/APVStruct.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents include/Module.h include/Cube.h include/OpenGLView.h include/GeometryView.h include/GeometryManager.h include/GeometryBuilder.h include/UnitTest.h apv_mapping/APVMapping.h apv_mapping/APVStruct.h $(DISTDIR)/
+	$(COPY_FILE) --parents src/main.cpp src/Module.cpp src/Cube.cpp src/OpenGLView.cpp src/GeometryView.cpp src/GeometryManager.cpp src/GeometryBuilder.cpp src/UnitTest.cpp apv_mapping/APVMapping.cpp apv_mapping/APVStruct.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -427,37 +427,25 @@ obj/Cube.o: src/Cube.cpp include/Cube.h \
 
 obj/OpenGLView.o: src/OpenGLView.cpp include/OpenGLView.h \
 		include/Module.h \
-		include/GeometryManager.h \
-		include/ConfigReader.h \
-		include/Cube.h \
-		apv_mapping/APVMapping.h \
-		apv_mapping/APVStruct.h
+		include/GeometryManager.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/OpenGLView.o src/OpenGLView.cpp
 
 obj/GeometryView.o: src/GeometryView.cpp include/GeometryView.h \
 		include/OpenGLView.h \
-		include/GeometryManager.h \
-		include/ConfigReader.h \
-		include/Module.h \
-		include/Cube.h \
-		apv_mapping/APVMapping.h \
-		apv_mapping/APVStruct.h
+		include/GeometryManager.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/GeometryView.o src/GeometryView.cpp
 
 obj/GeometryManager.o: src/GeometryManager.cpp include/GeometryManager.h \
-		include/ConfigReader.h \
 		include/Module.h \
-		include/Cube.h \
-		apv_mapping/APVMapping.h \
-		apv_mapping/APVStruct.h
+		include/Cube.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/GeometryManager.o src/GeometryManager.cpp
 
-obj/ConfigReader.o: src/ConfigReader.cpp include/ConfigReader.h \
+obj/GeometryBuilder.o: src/GeometryBuilder.cpp include/GeometryBuilder.h \
 		include/Module.h \
 		include/Cube.h \
 		apv_mapping/APVMapping.h \
 		apv_mapping/APVStruct.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/ConfigReader.o src/ConfigReader.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/GeometryBuilder.o src/GeometryBuilder.cpp
 
 obj/UnitTest.o: src/UnitTest.cpp include/UnitTest.h \
 		include/Module.h \

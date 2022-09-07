@@ -29,3 +29,6 @@
 8. GeometryView is the entrance Main Window class, it has
    a Module member and an OpenGLView member, its main functionality
    is to config the two members
+
+9. GeometryBuilder is the class, which uses the information from 
+   Text/XML parser, and build geometry

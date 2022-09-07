@@ -1,19 +1,27 @@
-#include "ConfigReader.h"
+////////////////////////////////////////////////////////////////////////////////
+// A class for building geometry                                              //
+// This class works in Cartesian Coords,                                      //
+// the world range is (-1, -1, -1) -> (1, 1, 1)                               //
+//                                                                            //
+//        Xinzhan Bai, Sep 07, 2022                                           //
+////////////////////////////////////////////////////////////////////////////////
+
+#include "GeometryBuilder.h"
 #include "APVMapping.h"
 #include <iostream>
 #include <QColor>
 
 namespace base_cad
 {
-    ConfigReader::ConfigReader()
+    GeometryBuilder::GeometryBuilder()
     {
     }
 
-    ConfigReader::~ConfigReader()
+    GeometryBuilder::~GeometryBuilder()
     {
     }
 
-    void ConfigReader::ReadAPVMapping(const char* path)
+    void GeometryBuilder::SetTextFile(const char* path)
     {
         map = apv_mapping::Mapping::Instance();
         map -> LoadMap(path);
@@ -21,12 +29,12 @@ namespace base_cad
         SetupVolume();
     }
 
-    Module * ConfigReader::GetCompleteAssembly() const
+    Module * GeometryBuilder::GetCompleteAssembly() const
     {
         return assembly;
     }
 
-    void ConfigReader::SetupVolume()
+    void GeometryBuilder::SetupVolume()
     {
         if(assembly == nullptr)
             assembly = new Module();
