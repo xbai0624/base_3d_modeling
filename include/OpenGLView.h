@@ -44,6 +44,7 @@ namespace base_cad
         void resizeGL(int height, int width) override;
         void mousePressEvent(QMouseEvent *event) override;
         void mouseMoveEvent(QMouseEvent *event) override;
+        void wheelEvent(QWheelEvent *event) override;
 
     private:
         void setupVertexAttribs();
@@ -78,6 +79,8 @@ namespace base_cad
 
         Module *module = nullptr;
         GeometryManager *geo_manager = nullptr;
+
+        float scale = 1.0;
     };
 }
 

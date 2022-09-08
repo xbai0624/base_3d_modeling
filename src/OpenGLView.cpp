@@ -65,6 +65,9 @@ namespace base_cad
         //glClearColor(1.0, 1.0, 1.0, 0);
         glClearColor(.0, .0, .0, 0);
 
+        //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // opengl wireframe mode
+        //glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // opengl normal/fill/default mode
+
         m_program = new QOpenGLShaderProgram;
         QString vertex_shader_file("./glsl/vertex_shader.glsl");
         QString fragment_shader_file("./glsl/fragment_shader.glsl");
@@ -125,6 +128,7 @@ namespace base_cad
 
         // model matrix
         m_world.setToIdentity();
+        m_world.scale(scale);
         m_world.rotate(m_xRot / 16., 1, 0, 0);
         m_world.rotate(m_yRot / 16., 0, 1, 0);
         m_world.rotate(m_zRot / 16., 0, 0, 1);
@@ -141,6 +145,7 @@ namespace base_cad
         m_program -> setUniformValue(m_normalMatrixLoc, normalMatrix);
 
         glDrawArrays(GL_TRIANGLES, 0, content_data_length);
+        //glDrawArrays(GL_LINES, 0, content_data_length);
 
         m_program -> release();
     }
@@ -174,6 +179,20 @@ namespace base_cad
         }
 
         m_lastPos = event->pos();
+    }
+
+    void OpenGLView::wheelEvent(QWheelEvent *event)
+    {
+        m_lastPos = event -> pos();
+        QPoint numDegrees = event -> angleDelta();
+        float y_rot = numDegrees.y()/8.;
+
+        if(y_rot < 0)
+            scale/=1.1;
+        if(y_rot > 0)
+            scale *= 1.1;
+
+        update();
     }
 
     static void normalize_angle(int &angle)
