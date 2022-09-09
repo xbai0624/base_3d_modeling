@@ -8,6 +8,7 @@
 #include <cassert>
 #include <QMatrix4x4>
 #include <iostream>
+#include <iomanip>
 
 namespace base_cad
 {
@@ -119,12 +120,13 @@ namespace base_cad
             size_t index = m_module.size();
             assert(m_module_triangles.size() == index);
             assert(m_module_triangle_vertex_index.size() == index);
+            assert(m_module_triangle_edge_configs.size() == index);
             assert(m_module_color.size() == index);
 
             // AddModule() will make a copy of the original moudle
             m_module[index] = new Module(*m);
 
-            const std::unordered_map<int, std::vector<float>> & triangles =
+            const std::unordered_map<int, std::vector<QVector3D>> & triangles =
                 m -> GetModuleTriangles();
             const std::unordered_map<int, std::vector<int>> & elements =
                 m -> GetModuleTriangleVertexIndex();
@@ -153,7 +155,7 @@ namespace base_cad
         }
     }
 
-    const std::unordered_map<int, std::vector<float>> & Module::GetModuleTriangles() const
+    const std::unordered_map<int, std::vector<QVector3D>> & Module::GetModuleTriangles() const
     {
         return m_module_triangles;
     }
@@ -209,16 +211,13 @@ namespace base_cad
             if(unit_length <= 0)
                 continue;
 
-            assert(unit_length % 3 == 0);
-            size_t n = unit_length / 3;
-
-            std::vector<float> tmp;
-            for(size_t index=0; index<n; index++)
+            std::vector<QVector3D> tmp;
+            for(size_t index=0; index<unit_length; index++)
             {
-                QVector4D v_tmp(i.second[3*index], i.second[3*index+1], i.second[3*index+2], 1);
+                QVector4D v_tmp(i.second[index], 1);
                 v_tmp = T * v_tmp;
 
-                tmp.push_back(v_tmp.x()), tmp.push_back(v_tmp.y()), tmp.push_back(v_tmp.z());
+                tmp.push_back(v_tmp.toVector3DAffine());
             }
 
             m_module_triangles[i.first].clear();
@@ -230,6 +229,35 @@ namespace base_cad
         {
             for(auto &i: m_module)
                 i.second -> Transform(x_pos, y_pos, z_pos, x_rot, y_rot, z_rot);
+        }
+    }
+
+    void Module::DebugInfo()
+    {
+        std::cout<<"#####################################################"<<std::endl;
+        std::cout<<"#################### Module #########################"<<std::endl;
+        std::cout<<std::setprecision(6)<<std::setfill(' ')<<std::setw(10);
+        for(auto &i: m_module_triangles) {
+            std::cout<<std::endl;
+            std::cout<<"triangles::Module index: "<<i.first<<std::endl;
+            for(auto &j: i.second) {
+                std::cout<<"("<<j.x()<<", "<<j.y()<<", "<<j.z()<<"), ";
+            }
+            std::cout<<std::endl;
+        }
+        for(auto &i: m_module_color){
+            std::cout<<std::endl;
+            std::cout<<"colors::Module index: "<<i.first<<std::endl;
+            std::cout<<i.second.redF()<<", "<<i.second.greenF()<<", "<<i.second.blueF()
+                     <<std::endl;
+        }
+        for(auto &i: m_module_triangle_edge_configs){
+            std::cout<<std::endl;
+            std::cout<<"triangle edge configs::Module Index: "<<i.first<<std::endl;
+            for(auto &j: i.second) {
+                std::cout<<"("<<j<<")";
+            }
+            std::cout<<std::endl;
         }
     }
 }

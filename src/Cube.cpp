@@ -199,104 +199,107 @@ namespace base_cad
     //    0: show this edge
     //    1: hide this edge, never show it. This means that
     //       this edge joins two triangles which are in the same surface
-    // 
-    // edge index convention:
-    //    vertex0 connects edge 0, vertex1 connects edge 1, vertex2 connects edge 2
-    //    it follows the same order (colock or anti-clock) with which
-    //    vertices are pushed back into the class member "triangles" vector
     //
     //    reference: https://developer.download.nvidia.com/whitepapers/2007/SDK10/SolidWireframe.pdf
+    // 
+    // edge index convention:
+    //    OpenGL use default anti-clock wise order,
+    //    edge index follow the vertex index: 
+    //    edge0 is the one p0 points to, it has no intersection with p0,
+    //    and so on: edge 1 is ...
+    //
+    //    reference: https://stackoverflow.com/questions/8142388/in-what-order-should-i-send-my-vertices-to-opengl-for-culling
     //
     void Cube::GenerateTriangles()
     {
         // front face - two triangles compose one face
         triangles.push_back(corner_coords[0]);
-        triangle_edge_config.push_back(0);
-        triangles.push_back(corner_coords[1]);
         triangle_edge_config.push_back(1);
+        triangles.push_back(corner_coords[1]);
+        triangle_edge_config.push_back(0);
         triangles.push_back(corner_coords[3]);
         triangle_edge_config.push_back(0);
 
         triangles.push_back(corner_coords[1]);
         triangle_edge_config.push_back(0);
         triangles.push_back(corner_coords[2]);
-        triangle_edge_config.push_back(0);
-        triangles.push_back(corner_coords[3]);
         triangle_edge_config.push_back(1);
+        triangles.push_back(corner_coords[3]);
+        triangle_edge_config.push_back(0);
 
         // right face
         triangles.push_back(corner_coords[1]);
-        triangle_edge_config.push_back(0);
-        triangles.push_back(corner_coords[2]);
         triangle_edge_config.push_back(1);
         triangles.push_back(corner_coords[4]);
         triangle_edge_config.push_back(0);
-
         triangles.push_back(corner_coords[2]);
-        triangle_edge_config.push_back(1);
+        triangle_edge_config.push_back(0);
+
         triangles.push_back(corner_coords[4]);
         triangle_edge_config.push_back(0);
         triangles.push_back(corner_coords[5]);
+        triangle_edge_config.push_back(1);
+        triangles.push_back(corner_coords[2]);
         triangle_edge_config.push_back(0);
 
         // back face
         triangles.push_back(corner_coords[4]);
         triangle_edge_config.push_back(0);
-        triangles.push_back(corner_coords[5]);
-        triangle_edge_config.push_back(0);
         triangles.push_back(corner_coords[6]);
+        triangle_edge_config.push_back(0);
+        triangles.push_back(corner_coords[5]);
         triangle_edge_config.push_back(1);
 
         triangles.push_back(corner_coords[4]);
-        triangle_edge_config.push_back(1);
-        triangles.push_back(corner_coords[6]);
         triangle_edge_config.push_back(0);
         triangles.push_back(corner_coords[7]);
+        triangle_edge_config.push_back(1);
+        triangles.push_back(corner_coords[6]);
         triangle_edge_config.push_back(0);
 
         // left face
         triangles.push_back(corner_coords[0]);
-        triangle_edge_config.push_back(0);
-        triangles.push_back(corner_coords[3]);
         triangle_edge_config.push_back(1);
+        triangles.push_back(corner_coords[3]);
+        triangle_edge_config.push_back(0);
         triangles.push_back(corner_coords[7]);
         triangle_edge_config.push_back(0);
 
         triangles.push_back(corner_coords[3]);
         triangle_edge_config.push_back(0);
         triangles.push_back(corner_coords[6]);
-        triangle_edge_config.push_back(0);
-        triangles.push_back(corner_coords[7]);
         triangle_edge_config.push_back(1);
+        triangles.push_back(corner_coords[7]);
+        triangle_edge_config.push_back(0);
 
         // top face
         triangles.push_back(corner_coords[2]);
         triangle_edge_config.push_back(0);
-        triangles.push_back(corner_coords[3]);
-        triangle_edge_config.push_back(0);
         triangles.push_back(corner_coords[6]);
+        triangle_edge_config.push_back(0);
+        triangles.push_back(corner_coords[3]);
         triangle_edge_config.push_back(1);
 
         triangles.push_back(corner_coords[2]);
         triangle_edge_config.push_back(0);
         triangles.push_back(corner_coords[5]);
-        triangle_edge_config.push_back(0);
-        triangles.push_back(corner_coords[6]);
         triangle_edge_config.push_back(1);
+        triangles.push_back(corner_coords[6]);
+        triangle_edge_config.push_back(0);
 
         // bottom face
-        triangles.push_back(corner_coords[0]);
-        triangle_edge_config.push_back(0);
         triangles.push_back(corner_coords[1]);
         triangle_edge_config.push_back(0);
-        triangles.push_back(corner_coords[7]);
+        triangles.push_back(corner_coords[0]);
         triangle_edge_config.push_back(1);
+        triangles.push_back(corner_coords[7]);
+        triangle_edge_config.push_back(0);
 
         triangles.push_back(corner_coords[1]);
         triangle_edge_config.push_back(0);
-        triangles.push_back(corner_coords[4]);
-        triangle_edge_config.push_back(0);
         triangles.push_back(corner_coords[7]);
+        triangle_edge_config.push_back(0);
+        triangles.push_back(corner_coords[4]);
         triangle_edge_config.push_back(1);
     }
 
@@ -341,14 +344,7 @@ namespace base_cad
         m_module[0] = this;
 
         // triangles
-        std::vector<float> tmp_triangle;
-        for(auto &i: triangles)
-        {
-            tmp_triangle.push_back(i.x());
-            tmp_triangle.push_back(i.y());
-            tmp_triangle.push_back(i.z());
-        }
-        m_module_triangles[0] = tmp_triangle;
+        m_module_triangles[0] = triangles;
         // edges
         m_module_triangle_edge_configs[0] = triangle_edge_config;
         // elements

@@ -78,6 +78,7 @@ namespace base_cad
         m_program -> bindAttributeLocation("vertex", 0);
         m_program -> bindAttributeLocation("normal", 1);
         m_program -> bindAttributeLocation("color", 2);
+        m_program -> bindAttributeLocation("edge_exclude", 3);
         m_program -> link();
 
         m_program -> bind();
@@ -109,13 +110,17 @@ namespace base_cad
         f -> glEnableVertexAttribArray(0);
         f -> glEnableVertexAttribArray(1);
         f -> glEnableVertexAttribArray(2);
+        f -> glEnableVertexAttribArray(3);
 
-        f -> glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6*sizeof(GLfloat),
+        // data array organization: (x, y, z, r, g, b, edge_property)
+        f -> glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 7*sizeof(GLfloat),
                 nullptr);
-        f -> glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6*sizeof(GLfloat),
+        f -> glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 7*sizeof(GLfloat),
                 reinterpret_cast<void*>(0*sizeof(GLfloat)));
-        f -> glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 6*sizeof(GLfloat),
+        f -> glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 7*sizeof(GLfloat),
                 reinterpret_cast<void*>(3*sizeof(GLfloat)));
+        f -> glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, 7*sizeof(GLfloat),
+                reinterpret_cast<void*>(6*sizeof(GLfloat)));
 
         m_data.release();
     }
@@ -266,7 +271,7 @@ namespace base_cad
             exit(0);
         }
 
-        const std::unordered_map<int, std::vector<float>> & triangles =
+        const std::unordered_map<int, std::vector<QVector3D>> & triangles =
             module -> GetModuleTriangles();
         const std::unordered_map<int, QColor> & colors =
             module -> GetModuleColors();
@@ -277,9 +282,9 @@ namespace base_cad
             delete[] content_data;
 
         content_data_length = module -> GetNumberOfVertices();
-        // each vertex has 3 coords (x, y, z), each triangle has 3 vertices
+        // each triangle has 3 vertices
         std::cout<<"INFO:: "<<__PRETTY_FUNCTION__<<": total triangle primitives to draw: "
-            <<content_data_length / 3 / 3 <<std::endl;
+            <<content_data_length / 3 <<std::endl;
 
         if(content_data_length <= 0) {
             std::cerr<<__PRETTY_FUNCTION__<<" Error: module has empty triangle array."
@@ -289,9 +294,9 @@ namespace base_cad
 
         // content data array is arranged in this way:
         // x_coord, y_coord, z_coord, r_color, g_color, b_color, edge_config
-        // so total length of array should be 2 * content_data_length + 1
-        content_data = new float[2*content_data_length + 1];
-        content_data_length = 2 * content_data_length + 1;
+        // so total length of array should be 7 * content_data_length
+        content_data = new float[7 * content_data_length];
+        content_data_length = 7 * content_data_length;
 
         // copy vertex, color & edge config
         size_t index = 0;
@@ -301,14 +306,20 @@ namespace base_cad
             float g = colors.at(i.first).greenF();
             float b = colors.at(i.first).blueF();
 
+            const std::vector<float> &edge_vector = triangle_edge_configs.at(i.first);
+            int edge_index = 0;
+
             for(auto &j: i.second)
             {
-                content_data[index++] = j;
-                if((int)index %3 == 0) {
-                    content_data[index++] = r;
-                    content_data[index++] = g;
-                    content_data[index++] = b;
-                }
+                content_data[index++] = j.x();
+                content_data[index++] = j.y();
+                content_data[index++] = j.z();
+                content_data[index++] = r;
+                content_data[index++] = g;
+                content_data[index++] = b;
+                content_data[index] = edge_vector[edge_index];
+                edge_index++;
+                index++;
             }
         }
     }

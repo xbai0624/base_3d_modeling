@@ -49,23 +49,17 @@ namespace base_cad
         else
             assembly->Clear();
 
-        //assembly = build_assembly_test();
-
-        // a simple cube, for testing geometry shader
-        Cube * c = new Cube(30 * unit * 2, 30 * unit * 2, 30 *unit*2);
-        c -> SetColor(QColor(255, 0, 0));
-        c -> Init();
-
-        assembly = c;
+        assembly = build_assembly_test();
     }
 
     Module* GeometryBuilder::build_chamber_test()
     {
         // an uva xy chamber
-        Cube top_plane(50*unit/2., 40*unit/2., 5*unit/2, 0, -3*unit, 4*unit/2);
+        Cube top_plane(50*unit/2., 40*unit/2., 5*unit/2, 0, -3*unit, 5*unit/2);
         top_plane.SetColor(QColor(0, 255, 255));
         top_plane.Init();
-        Cube bottom_plane(65*unit/2., 48*unit/2., 1*unit/2., 0, 0, -1*unit/2);
+
+        Cube bottom_plane(65*unit/2., 48*unit/2., 1*unit/2., 0, 0, -1.*unit/2);
         bottom_plane.SetColor(QColor(0, 128, 12));
         bottom_plane.Init();
 
