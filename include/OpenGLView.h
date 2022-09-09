@@ -61,6 +61,7 @@ namespace base_cad
         int m_mvMatrixLoc = 0;
         int m_normalMatrixLoc = 0;
         int m_lightPosLoc = 0;
+        int m_WinScaleLoc = 0;
 
         // transformation
         QMatrix4x4 m_proj;

@@ -51,7 +51,8 @@ namespace base_cad
         position(m.position),
         x_half_width(m.x_half_width), y_half_width(m.y_half_width), z_half_width(m.z_half_width),
         x_rot(0), y_rot(0), z_rot(0),
-        triangles(m.triangles), elements(m.elements)
+        triangles(m.triangles), triangle_edge_config(m.triangle_edge_config),
+        triangle_vertex_index(m.triangle_vertex_index)
     {
     }
 
@@ -60,7 +61,8 @@ namespace base_cad
         position(std::move(m.position)),
         x_half_width(m.x_half_width), y_half_width(m.y_half_width), z_half_width(m.z_half_width),
         x_rot(0), y_rot(0), z_rot(0),
-        triangles(std::move(m.triangles)), elements(std::move(m.elements))
+        triangles(std::move(m.triangles)), triangle_edge_config(std::move(m.triangle_edge_config)),
+        triangle_vertex_index(std::move(m.triangle_vertex_index))
     {
     }
 
@@ -84,8 +86,9 @@ namespace base_cad
         position = m.position;
         x_half_width = m.x_half_width, y_half_width = m.y_half_width, z_half_width = m.z_half_width;
         x_rot = m.x_rot, y_rot = m.y_rot, z_rot = m.z_rot;
-        triangles = m.triangles;
-        elements = m.elements;
+        triangles = std::move(m.triangles);
+        triangle_edge_config = std::move(m.triangle_edge_config);
+        triangle_vertex_index = std::move(m.triangle_vertex_index);
 
         return *this;
     }
@@ -95,7 +98,8 @@ namespace base_cad
         Module::Clear();
 
         triangles.clear();
-        elements.clear();
+        triangle_edge_config.clear();
+        triangle_vertex_index.clear();
         corner_coords.clear();
     }
 
@@ -183,59 +187,120 @@ namespace base_cad
         Transform();
 
         GenerateTriangles();
-        GenerateTriangleElements();
+        GenerateTriangleVertexIndex();
 
         FillModule();
     }
 
+    ////////////////////////////////////////////////////////////////////////////////
     // generate triangles for OpenGL to render
+    //
+    // edge config:
+    //    0: show this edge
+    //    1: hide this edge, never show it. This means that
+    //       this edge joins two triangles which are in the same surface
+    // 
+    // edge index convention:
+    //    vertex0 connects edge 0, vertex1 connects edge 1, vertex2 connects edge 2
+    //    it follows the same order (colock or anti-clock) with which
+    //    vertices are pushed back into the class member "triangles" vector
+    //
+    //    reference: https://developer.download.nvidia.com/whitepapers/2007/SDK10/SolidWireframe.pdf
+    //
     void Cube::GenerateTriangles()
     {
         // front face - two triangles compose one face
         triangles.push_back(corner_coords[0]);
+        triangle_edge_config.push_back(0);
         triangles.push_back(corner_coords[1]);
+        triangle_edge_config.push_back(1);
         triangles.push_back(corner_coords[3]);
+        triangle_edge_config.push_back(0);
+
         triangles.push_back(corner_coords[1]);
+        triangle_edge_config.push_back(0);
         triangles.push_back(corner_coords[2]);
+        triangle_edge_config.push_back(0);
         triangles.push_back(corner_coords[3]);
+        triangle_edge_config.push_back(1);
+
         // right face
         triangles.push_back(corner_coords[1]);
+        triangle_edge_config.push_back(0);
         triangles.push_back(corner_coords[2]);
+        triangle_edge_config.push_back(1);
         triangles.push_back(corner_coords[4]);
+        triangle_edge_config.push_back(0);
+
         triangles.push_back(corner_coords[2]);
+        triangle_edge_config.push_back(1);
         triangles.push_back(corner_coords[4]);
+        triangle_edge_config.push_back(0);
         triangles.push_back(corner_coords[5]);
+        triangle_edge_config.push_back(0);
+
         // back face
         triangles.push_back(corner_coords[4]);
+        triangle_edge_config.push_back(0);
         triangles.push_back(corner_coords[5]);
+        triangle_edge_config.push_back(0);
         triangles.push_back(corner_coords[6]);
+        triangle_edge_config.push_back(1);
+
         triangles.push_back(corner_coords[4]);
+        triangle_edge_config.push_back(1);
         triangles.push_back(corner_coords[6]);
+        triangle_edge_config.push_back(0);
         triangles.push_back(corner_coords[7]);
+        triangle_edge_config.push_back(0);
+
         // left face
         triangles.push_back(corner_coords[0]);
+        triangle_edge_config.push_back(0);
         triangles.push_back(corner_coords[3]);
+        triangle_edge_config.push_back(1);
         triangles.push_back(corner_coords[7]);
+        triangle_edge_config.push_back(0);
+
         triangles.push_back(corner_coords[3]);
+        triangle_edge_config.push_back(0);
         triangles.push_back(corner_coords[6]);
+        triangle_edge_config.push_back(0);
         triangles.push_back(corner_coords[7]);
+        triangle_edge_config.push_back(1);
+
         // top face
         triangles.push_back(corner_coords[2]);
+        triangle_edge_config.push_back(0);
         triangles.push_back(corner_coords[3]);
+        triangle_edge_config.push_back(0);
         triangles.push_back(corner_coords[6]);
+        triangle_edge_config.push_back(1);
+
         triangles.push_back(corner_coords[2]);
+        triangle_edge_config.push_back(0);
         triangles.push_back(corner_coords[5]);
+        triangle_edge_config.push_back(0);
         triangles.push_back(corner_coords[6]);
+        triangle_edge_config.push_back(1);
+
         // bottom face
         triangles.push_back(corner_coords[0]);
+        triangle_edge_config.push_back(0);
         triangles.push_back(corner_coords[1]);
+        triangle_edge_config.push_back(0);
         triangles.push_back(corner_coords[7]);
+        triangle_edge_config.push_back(1);
+
         triangles.push_back(corner_coords[1]);
+        triangle_edge_config.push_back(0);
         triangles.push_back(corner_coords[4]);
+        triangle_edge_config.push_back(0);
         triangles.push_back(corner_coords[7]);
+        triangle_edge_config.push_back(1);
     }
 
-    void Cube::GenerateTriangleElements()
+    void Cube::GenerateTriangleVertexIndex()
     {
         // reserved for future implementation
         //
@@ -244,14 +309,14 @@ namespace base_cad
         // but it needs a reimplementation of triangles array, which I 
         // don't want to do at present, so fill 0 to avoid assersion failure
 
-        if(m_module_triangle_elements.size() != 0)
+        if(m_module_triangle_vertex_index.size() != 0)
         {
             std::cerr<<__PRETTY_FUNCTION__<<" Error: triangle element array size() != 0,"<<std::endl
                 <<"                element array should be filled at lowest level only for primitive elements."
                 <<std::endl;
             exit(0);
         }
-        m_module_triangle_elements[0] = std::vector<int>{0, 0, 0};
+        m_module_triangle_vertex_index[0] = std::vector<int>{0, 0, 0};
     }
 
     const std::vector<QVector3D> & Cube::GetTriangles() const
@@ -284,8 +349,10 @@ namespace base_cad
             tmp_triangle.push_back(i.z());
         }
         m_module_triangles[0] = tmp_triangle;
+        // edges
+        m_module_triangle_edge_configs[0] = triangle_edge_config;
         // elements
-        m_module_triangle_elements[0] = elements;
+        m_module_triangle_vertex_index[0] = triangle_vertex_index;
     }
 
     void Cube::UnitTest()

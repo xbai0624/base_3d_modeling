@@ -37,7 +37,7 @@ namespace base_cad
     private:
         void GenerateCornerCoords();
         void GenerateTriangles();
-        void GenerateTriangleElements();
+        void GenerateTriangleVertexIndex();
         void FillModule();
 
     private:
@@ -50,8 +50,9 @@ namespace base_cad
         float y_rot;
         float z_rot;
 
-        std::vector<QVector3D> triangles;
-        std::vector<int> elements;
+        std::vector<QVector3D> triangles; // stores vertices of all triangles
+        std::vector<float> triangle_edge_config;
+        std::vector<int> triangle_vertex_index;
 
         std::vector<QVector3D> corner_coords;
     };

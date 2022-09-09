@@ -20,7 +20,8 @@ namespace base_cad
     // copy ctor
     Module::Module(const Module& m)
         : m_module_triangles(m.m_module_triangles),
-        m_module_triangle_elements(m.m_module_triangle_elements),
+        m_module_triangle_vertex_index(m.m_module_triangle_vertex_index),
+        m_module_triangle_edge_configs(m.m_module_triangle_edge_configs),
         m_module_color(m.m_module_color)
     {
         // copy all modules referenced by pointers
@@ -40,7 +41,8 @@ namespace base_cad
     // move ctor
     Module::Module(Module &&m)
         : m_module(std::move(m.m_module)), m_module_triangles(std::move(m.m_module_triangles)),
-        m_module_triangle_elements(std::move(m.m_module_triangle_elements)),
+        m_module_triangle_vertex_index(std::move(m.m_module_triangle_vertex_index)),
+        m_module_triangle_edge_configs(m.m_module_triangle_edge_configs),
         m_module_color(std::move(m.m_module_color))
     {
     }
@@ -65,7 +67,8 @@ namespace base_cad
 
         m_module = std::move(m.m_module);
         m_module_triangles = std::move(m.m_module_triangles);
-        m_module_triangle_elements = std::move(m.m_module_triangle_elements);
+        m_module_triangle_vertex_index = std::move(m.m_module_triangle_vertex_index);
+        m_module_triangle_edge_configs = std::move(m.m_module_triangle_edge_configs);
         m_module_color = std::move(m.m_module_color);
 
         return *this;
@@ -79,7 +82,8 @@ namespace base_cad
     void Module::Clear()
     {
         m_module_triangles.clear();
-        m_module_triangle_elements.clear();
+        m_module_triangle_vertex_index.clear();
+        m_module_triangle_edge_configs.clear();
         m_module_color.clear();
 
         if(HasChild())
@@ -114,7 +118,7 @@ namespace base_cad
         {
             size_t index = m_module.size();
             assert(m_module_triangles.size() == index);
-            assert(m_module_triangle_elements.size() == index);
+            assert(m_module_triangle_vertex_index.size() == index);
             assert(m_module_color.size() == index);
 
             // AddModule() will make a copy of the original moudle
@@ -123,16 +127,20 @@ namespace base_cad
             const std::unordered_map<int, std::vector<float>> & triangles =
                 m -> GetModuleTriangles();
             const std::unordered_map<int, std::vector<int>> & elements =
-                m -> GetModuleTriangleElements();
+                m -> GetModuleTriangleVertexIndex();
+            const std::unordered_map<int, std::vector<float>> &edges =
+                m -> GetModuleTriangleEdgeConfigs();
             const std::unordered_map<int, QColor> & colors =
                 m -> GetModuleColors();
 
             assert(triangles.size() == 1);
             assert(elements.size() == 1);
             assert(colors.size() == 1);
+            assert(edges.size() == 1);
 
             m_module_triangles[index] =  triangles.at(0);
-            m_module_triangle_elements[index] = elements.at(0);
+            m_module_triangle_vertex_index[index] = elements.at(0);
+            m_module_triangle_edge_configs[index] = edges.at(0);
             m_module_color[index] = colors.at(0);
         }
         else
@@ -150,9 +158,9 @@ namespace base_cad
         return m_module_triangles;
     }
 
-    const std::unordered_map<int, std::vector<int>> & Module::GetModuleTriangleElements() const
+    const std::unordered_map<int, std::vector<int>> & Module::GetModuleTriangleVertexIndex() const
     {
-        return m_module_triangle_elements;
+        return m_module_triangle_vertex_index;
     }
 
     const std::unordered_map<int, Module*> & Module::GetModules() const
@@ -165,12 +173,17 @@ namespace base_cad
         return m_module_color;
     }
 
+    const std::unordered_map<int, std::vector<float>> & Module::GetModuleTriangleEdgeConfigs() const
+    {
+        return m_module_triangle_edge_configs;
+    }
+
     void Module::SetColor([[maybe_unused]] QColor c)
     {
         // place holder, this function should be implemented in subclass
     }
 
-    int Module::GetTriangleLength()
+    int Module::GetNumberOfVertices()
     {
         int length = 0;
         for(auto &i: m_module_triangles)

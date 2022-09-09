@@ -49,7 +49,14 @@ namespace base_cad
         else
             assembly->Clear();
 
-        assembly = build_assembly_test();
+        //assembly = build_assembly_test();
+
+        // a simple cube, for testing geometry shader
+        Cube * c = new Cube(30 * unit * 2, 30 * unit * 2, 30 *unit*2);
+        c -> SetColor(QColor(255, 0, 0));
+        c -> Init();
+
+        assembly = c;
     }
 
     Module* GeometryBuilder::build_chamber_test()

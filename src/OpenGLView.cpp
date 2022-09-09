@@ -70,9 +70,11 @@ namespace base_cad
 
         m_program = new QOpenGLShaderProgram;
         QString vertex_shader_file("./glsl/vertex_shader.glsl");
+        QString geometry_shader_file("./glsl/geometry_shader.glsl");
         QString fragment_shader_file("./glsl/fragment_shader.glsl");
         m_program -> addShaderFromSourceFile(QOpenGLShader::Vertex, vertex_shader_file);
         m_program -> addShaderFromSourceFile(QOpenGLShader::Fragment, fragment_shader_file);
+        m_program -> addShaderFromSourceFile(QOpenGLShader::Geometry, geometry_shader_file);
         m_program -> bindAttributeLocation("vertex", 0);
         m_program -> bindAttributeLocation("normal", 1);
         m_program -> bindAttributeLocation("color", 2);
@@ -83,6 +85,7 @@ namespace base_cad
         m_mvMatrixLoc = m_program -> uniformLocation("mvMatrix");
         m_normalMatrixLoc = m_program -> uniformLocation("normalMatrix");
         m_lightPosLoc = m_program -> uniformLocation("lightPos");
+        m_WinScaleLoc = m_program -> uniformLocation("WIN_SCALE");
 
         m_vao.create();
         QOpenGLVertexArrayObject::Binder vaoBinder(&m_vao);
@@ -144,8 +147,12 @@ namespace base_cad
         QMatrix3x3 normalMatrix = m_world.normalMatrix();
         m_program -> setUniformValue(m_normalMatrixLoc, normalMatrix);
 
+        // window size
+        m_program -> setUniformValue(m_WinScaleLoc, QVector2D(1000, 900));
+
         glDrawArrays(GL_TRIANGLES, 0, content_data_length);
         //glDrawArrays(GL_LINES, 0, content_data_length);
+        //glDrawArrays(GL_POINTS, 0, content_data_length);
 
         m_program -> release();
     }
@@ -263,12 +270,14 @@ namespace base_cad
             module -> GetModuleTriangles();
         const std::unordered_map<int, QColor> & colors =
             module -> GetModuleColors();
+        const std::unordered_map<int, std::vector<float>> &triangle_edge_configs =
+            module -> GetModuleTriangleEdgeConfigs();
 
         if(content_data_length > 0)
             delete[] content_data;
 
-        content_data_length = module -> GetTriangleLength();
-        // each vertex has 3 points, each triangle has 3 vertices
+        content_data_length = module -> GetNumberOfVertices();
+        // each vertex has 3 coords (x, y, z), each triangle has 3 vertices
         std::cout<<"INFO:: "<<__PRETTY_FUNCTION__<<": total triangle primitives to draw: "
             <<content_data_length / 3 / 3 <<std::endl;
 
@@ -278,11 +287,13 @@ namespace base_cad
             exit(0);
         }
 
-        // double length to accormodate color
-        content_data = new float[2*content_data_length];
-        content_data_length = 2 * content_data_length;
+        // content data array is arranged in this way:
+        // x_coord, y_coord, z_coord, r_color, g_color, b_color, edge_config
+        // so total length of array should be 2 * content_data_length + 1
+        content_data = new float[2*content_data_length + 1];
+        content_data_length = 2 * content_data_length + 1;
 
-        // copy vertex and color
+        // copy vertex, color & edge config
         size_t index = 0;
         for(auto &i: triangles)
         {
