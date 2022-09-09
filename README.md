@@ -3,7 +3,6 @@ Designed for visualization of detector assembly.
 
 Example:
 surface mode:
-![Screenshot](demo/demo.png)
-
+![alt text](https://github.com/xbai0624/base_3d_modeling/blob/master/demo/demo.png?raw=true)
 surface and wireframe mode:
-![Screenshot](demo/surface_wire_frame_mode.png.png)
+![Screenshot](https://github.com/xbai0624/base_3d_modeling/blob/master/demo/surface_wire_frame_mode.png?raw=true)
