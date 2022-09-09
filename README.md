@@ -4,5 +4,6 @@ Designed for visualization of detector assembly.
 Example:
 surface mode:
 ![Screenshot](demo/demo.png)
+
 surface and wireframe mode:
 ![Screenshot](demo/surface_wire_frame_mode.png.png)
