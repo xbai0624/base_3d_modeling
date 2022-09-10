@@ -241,9 +241,9 @@ namespace base_cad
             assembly -> AddModule(&ball1);
         };
 
-        //test_assembly();
-        test_cube();
-        test_trapezoid();
-        test_sphere();
+        test_assembly();
+        //test_cube();
+        //test_trapezoid();
+        //test_sphere();
     }
 }
