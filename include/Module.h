@@ -9,6 +9,9 @@
 
 namespace base_cad
 {
+    #define SHOW_WIRE_FRAME 0
+    #define HIDE_WIRE_FRAME 1
+
     class Module
     {
     public:

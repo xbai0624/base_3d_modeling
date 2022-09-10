@@ -45,6 +45,7 @@ namespace base_cad
         Module * build_chamber_apv_test();
         Module * build_layer_test();
         Module * build_assembly_test();
+        void test_geometry();
 
     private:
         apv_mapping::Mapping *map = nullptr;

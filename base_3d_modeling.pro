@@ -5,7 +5,7 @@
 TEMPLATE = app
 TARGET = main
 
-INCLUDEPATH += ./include ./apv_mapping
+INCLUDEPATH += ./include ./apv_mapping/include ./geometry/include
 
 QT += core gui widgets opengl
 CONFIG += 
@@ -25,7 +25,6 @@ OBJECTS_DIR = obj
 # Main Input
 HEADERS += \
            include/Module.h \
-           include/Cube.h \
            include/OpenGLView.h \
            include/GeometryView.h \
            include/GeometryManager.h \
@@ -35,18 +34,28 @@ HEADERS += \
 SOURCES += \
            src/main.cpp \
            src/Module.cpp \
-           src/Cube.cpp \
            src/OpenGLView.cpp \
            src/GeometryView.cpp \
            src/GeometryManager.cpp \
            src/GeometryBuilder.cpp \
            src/UnitTest.cpp \
 
-# subsystem input
+# geometry input
 HEADERS += \
-           apv_mapping/APVMapping.h \
-           apv_mapping/APVStruct.h \
+           geometry/include/Cube.h \
+           geometry/include/Trapezoid.h \
+           geometry/include/Sphere.h \
 
 SOURCES += \
-           apv_mapping/APVMapping.cpp \
-           apv_mapping/APVStruct.cpp \
+           geometry/src/Cube.cpp \
+           geometry/src/Trapezoid.cpp \
+           geometry/src/Sphere.cpp \
+
+# subsystem input
+HEADERS += \
+           apv_mapping/include/APVMapping.h \
+           apv_mapping/include/APVStruct.h \
+
+SOURCES += \
+           apv_mapping/src/APVMapping.cpp \
+           apv_mapping/src/APVStruct.cpp \

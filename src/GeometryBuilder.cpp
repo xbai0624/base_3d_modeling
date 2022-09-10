@@ -8,6 +8,8 @@
 
 #include "GeometryBuilder.h"
 #include "APVMapping.h"
+#include "Trapezoid.h"
+#include "Sphere.h"
 #include <iostream>
 #include <QColor>
 
@@ -49,7 +51,7 @@ namespace base_cad
         else
             assembly->Clear();
 
-        assembly = build_assembly_test();
+        test_geometry();
     }
 
     Module* GeometryBuilder::build_chamber_test()
@@ -187,5 +189,61 @@ namespace base_cad
         as -> Transform(25*unit, -25*unit, 0);
 
         return as;
+    }
+
+    void GeometryBuilder::test_geometry()
+    {
+        auto test_assembly = [&]()
+        {
+            assembly = build_assembly_test();
+        };
+
+        auto test_cube = [&]()
+        {
+            Cube cube(0.5, 0.5, 0.5, 6, -6, 0);
+            cube.SetColor(QColor(255, 255, 0));
+            cube.SetName("cube1");
+            cube.Init();
+
+            assembly -> AddModule(&cube);
+        };
+
+        auto test_trapezoid = [&]()
+        {
+            Trapezoid trapezoid1(1, 1, 4, 4, 3);
+            trapezoid1.SetColor(QColor(255, 0, 0));
+            trapezoid1.SetRotation(45, 45, 45);
+            trapezoid1.SetName("trape1");
+            trapezoid1.Init();
+
+            Trapezoid trapezoid2(0.05, 0.05, 4, 4, 3, 6, 6, 6);
+            trapezoid2.SetColor(QColor(0, 255, 0));
+            trapezoid2.SetName("trape2");
+            trapezoid2.Init();
+
+            Trapezoid trapezoid3(0.2, 1, 0.2, 4, 3, -6, -6, -6);
+            trapezoid3.SetColor(QColor(0, 0, 255));
+            trapezoid3.SetName("trape3");
+            trapezoid3.Init();
+
+            assembly->AddModule(&trapezoid1);
+            assembly->AddModule(&trapezoid2);
+            assembly->AddModule(&trapezoid3);
+        };
+
+        auto test_sphere = [&]()
+        {
+            Sphere ball1(3, -10, 6, 0);
+            ball1.SetColor(QColor(0,0,255));
+            ball1.SetName("ball1");
+            ball1.Init();
+
+            assembly -> AddModule(&ball1);
+        };
+
+        //test_assembly();
+        test_cube();
+        test_trapezoid();
+        test_sphere();
     }
 }

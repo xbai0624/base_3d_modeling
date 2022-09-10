@@ -17,7 +17,7 @@ CXX           = g++
 DEFINES       = -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -O2 -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
 CXXFLAGS      = -pipe -std=c++17 -O2 -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
-INCPATH       = -I. -Iinclude -Iapv_mapping -I/usr/include/qt5 -I/usr/include/qt5/QtOpenGL -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtCore -Imoc -I/../lib64/qt5/mkspecs/linux-g++
+INCPATH       = -I. -Iinclude -Iapv_mapping/include -Igeometry/include -I/usr/include/qt5 -I/usr/include/qt5/QtOpenGL -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtCore -Imoc -I/../lib64/qt5/mkspecs/linux-g++
 QMAKE         = /usr/bin/qmake-qt5
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -54,23 +54,27 @@ OBJECTS_DIR   = obj/
 
 SOURCES       = src/main.cpp \
 		src/Module.cpp \
-		src/Cube.cpp \
 		src/OpenGLView.cpp \
 		src/GeometryView.cpp \
 		src/GeometryManager.cpp \
 		src/GeometryBuilder.cpp \
 		src/UnitTest.cpp \
-		apv_mapping/APVMapping.cpp \
-		apv_mapping/APVStruct.cpp moc/moc_OpenGLView.cpp \
+		geometry/src/Cube.cpp \
+		geometry/src/Trapezoid.cpp \
+		geometry/src/Sphere.cpp \
+		apv_mapping/src/APVMapping.cpp \
+		apv_mapping/src/APVStruct.cpp moc/moc_OpenGLView.cpp \
 		moc/moc_GeometryView.cpp
 OBJECTS       = obj/main.o \
 		obj/Module.o \
-		obj/Cube.o \
 		obj/OpenGLView.o \
 		obj/GeometryView.o \
 		obj/GeometryManager.o \
 		obj/GeometryBuilder.o \
 		obj/UnitTest.o \
+		obj/Cube.o \
+		obj/Trapezoid.o \
+		obj/Sphere.o \
 		obj/APVMapping.o \
 		obj/APVStruct.o \
 		obj/moc_OpenGLView.o \
@@ -152,23 +156,27 @@ DIST          = /../lib64/qt5/mkspecs/features/spec_pre.prf \
 		/../lib64/qt5/mkspecs/features/yacc.prf \
 		/../lib64/qt5/mkspecs/features/lex.prf \
 		base_3d_modeling.pro include/Module.h \
-		include/Cube.h \
 		include/OpenGLView.h \
 		include/GeometryView.h \
 		include/GeometryManager.h \
 		include/GeometryBuilder.h \
 		include/UnitTest.h \
-		apv_mapping/APVMapping.h \
-		apv_mapping/APVStruct.h src/main.cpp \
+		geometry/include/Cube.h \
+		geometry/include/Trapezoid.h \
+		geometry/include/Sphere.h \
+		apv_mapping/include/APVMapping.h \
+		apv_mapping/include/APVStruct.h src/main.cpp \
 		src/Module.cpp \
-		src/Cube.cpp \
 		src/OpenGLView.cpp \
 		src/GeometryView.cpp \
 		src/GeometryManager.cpp \
 		src/GeometryBuilder.cpp \
 		src/UnitTest.cpp \
-		apv_mapping/APVMapping.cpp \
-		apv_mapping/APVStruct.cpp
+		geometry/src/Cube.cpp \
+		geometry/src/Trapezoid.cpp \
+		geometry/src/Sphere.cpp \
+		apv_mapping/src/APVMapping.cpp \
+		apv_mapping/src/APVStruct.cpp
 QMAKE_TARGET  = main
 DESTDIR       = 
 TARGET        = main
@@ -350,8 +358,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /../lib64/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents include/Module.h include/Cube.h include/OpenGLView.h include/GeometryView.h include/GeometryManager.h include/GeometryBuilder.h include/UnitTest.h apv_mapping/APVMapping.h apv_mapping/APVStruct.h $(DISTDIR)/
-	$(COPY_FILE) --parents src/main.cpp src/Module.cpp src/Cube.cpp src/OpenGLView.cpp src/GeometryView.cpp src/GeometryManager.cpp src/GeometryBuilder.cpp src/UnitTest.cpp apv_mapping/APVMapping.cpp apv_mapping/APVStruct.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents include/Module.h include/OpenGLView.h include/GeometryView.h include/GeometryManager.h include/GeometryBuilder.h include/UnitTest.h geometry/include/Cube.h geometry/include/Trapezoid.h geometry/include/Sphere.h apv_mapping/include/APVMapping.h apv_mapping/include/APVStruct.h $(DISTDIR)/
+	$(COPY_FILE) --parents src/main.cpp src/Module.cpp src/OpenGLView.cpp src/GeometryView.cpp src/GeometryManager.cpp src/GeometryBuilder.cpp src/UnitTest.cpp geometry/src/Cube.cpp geometry/src/Trapezoid.cpp geometry/src/Sphere.cpp apv_mapping/src/APVMapping.cpp apv_mapping/src/APVStruct.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -389,12 +397,12 @@ compiler_moc_header_clean:
 moc/moc_OpenGLView.cpp: include/OpenGLView.h \
 		moc/moc_predefs.h \
 		/../lib64/qt5/bin/moc
-	/../lib64/qt5/bin/moc $(DEFINES) --include /home/xinzhan/test/base_3d_modeling/moc/moc_predefs.h -I/../lib64/qt5/mkspecs/linux-g++ -I/home/xinzhan/test/base_3d_modeling -I/home/xinzhan/test/base_3d_modeling/include -I/home/xinzhan/test/base_3d_modeling/apv_mapping -I/usr/include/qt5 -I/usr/include/qt5/QtOpenGL -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtCore -I/usr/include/c++/8 -I/usr/include/c++/8/x86_64-redhat-linux -I/usr/include/c++/8/backward -I/usr/lib/gcc/x86_64-redhat-linux/8/include -I/usr/local/include -I/usr/include include/OpenGLView.h -o moc/moc_OpenGLView.cpp
+	/../lib64/qt5/bin/moc $(DEFINES) --include /home/xinzhan/test/base_3d_modeling/moc/moc_predefs.h -I/../lib64/qt5/mkspecs/linux-g++ -I/home/xinzhan/test/base_3d_modeling -I/home/xinzhan/test/base_3d_modeling/include -I/home/xinzhan/test/base_3d_modeling/apv_mapping/include -I/home/xinzhan/test/base_3d_modeling/geometry/include -I/usr/include/qt5 -I/usr/include/qt5/QtOpenGL -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtCore -I/usr/include/c++/8 -I/usr/include/c++/8/x86_64-redhat-linux -I/usr/include/c++/8/backward -I/usr/lib/gcc/x86_64-redhat-linux/8/include -I/usr/local/include -I/usr/include include/OpenGLView.h -o moc/moc_OpenGLView.cpp
 
 moc/moc_GeometryView.cpp: include/GeometryView.h \
 		moc/moc_predefs.h \
 		/../lib64/qt5/bin/moc
-	/../lib64/qt5/bin/moc $(DEFINES) --include /home/xinzhan/test/base_3d_modeling/moc/moc_predefs.h -I/../lib64/qt5/mkspecs/linux-g++ -I/home/xinzhan/test/base_3d_modeling -I/home/xinzhan/test/base_3d_modeling/include -I/home/xinzhan/test/base_3d_modeling/apv_mapping -I/usr/include/qt5 -I/usr/include/qt5/QtOpenGL -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtCore -I/usr/include/c++/8 -I/usr/include/c++/8/x86_64-redhat-linux -I/usr/include/c++/8/backward -I/usr/lib/gcc/x86_64-redhat-linux/8/include -I/usr/local/include -I/usr/include include/GeometryView.h -o moc/moc_GeometryView.cpp
+	/../lib64/qt5/bin/moc $(DEFINES) --include /home/xinzhan/test/base_3d_modeling/moc/moc_predefs.h -I/../lib64/qt5/mkspecs/linux-g++ -I/home/xinzhan/test/base_3d_modeling -I/home/xinzhan/test/base_3d_modeling/include -I/home/xinzhan/test/base_3d_modeling/apv_mapping/include -I/home/xinzhan/test/base_3d_modeling/geometry/include -I/usr/include/qt5 -I/usr/include/qt5/QtOpenGL -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtCore -I/usr/include/c++/8 -I/usr/include/c++/8/x86_64-redhat-linux -I/usr/include/c++/8/backward -I/usr/lib/gcc/x86_64-redhat-linux/8/include -I/usr/local/include -I/usr/include include/GeometryView.h -o moc/moc_GeometryView.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -414,50 +422,72 @@ compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean
 
 obj/main.o: src/main.cpp include/UnitTest.h \
 		include/Module.h \
-		include/Cube.h \
+		geometry/include/Cube.h \
 		include/GeometryView.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/main.o src/main.cpp
 
 obj/Module.o: src/Module.cpp include/Module.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/Module.o src/Module.cpp
 
-obj/Cube.o: src/Cube.cpp include/Cube.h \
-		include/Module.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/Cube.o src/Cube.cpp
-
 obj/OpenGLView.o: src/OpenGLView.cpp include/OpenGLView.h \
 		include/Module.h \
-		include/GeometryManager.h
+		include/GeometryManager.h \
+		include/GeometryBuilder.h \
+		geometry/include/Cube.h \
+		apv_mapping/include/APVMapping.h \
+		apv_mapping/include/APVStruct.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/OpenGLView.o src/OpenGLView.cpp
 
 obj/GeometryView.o: src/GeometryView.cpp include/GeometryView.h \
 		include/OpenGLView.h \
-		include/GeometryManager.h
+		include/GeometryManager.h \
+		include/GeometryBuilder.h \
+		include/Module.h \
+		geometry/include/Cube.h \
+		apv_mapping/include/APVMapping.h \
+		apv_mapping/include/APVStruct.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/GeometryView.o src/GeometryView.cpp
 
 obj/GeometryManager.o: src/GeometryManager.cpp include/GeometryManager.h \
+		include/GeometryBuilder.h \
 		include/Module.h \
-		include/Cube.h
+		geometry/include/Cube.h \
+		apv_mapping/include/APVMapping.h \
+		apv_mapping/include/APVStruct.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/GeometryManager.o src/GeometryManager.cpp
 
 obj/GeometryBuilder.o: src/GeometryBuilder.cpp include/GeometryBuilder.h \
 		include/Module.h \
-		include/Cube.h \
-		apv_mapping/APVMapping.h \
-		apv_mapping/APVStruct.h
+		geometry/include/Cube.h \
+		apv_mapping/include/APVMapping.h \
+		apv_mapping/include/APVStruct.h \
+		geometry/include/Trapezoid.h \
+		geometry/include/Sphere.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/GeometryBuilder.o src/GeometryBuilder.cpp
 
 obj/UnitTest.o: src/UnitTest.cpp include/UnitTest.h \
 		include/Module.h \
-		include/Cube.h
+		geometry/include/Cube.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/UnitTest.o src/UnitTest.cpp
 
-obj/APVMapping.o: apv_mapping/APVMapping.cpp apv_mapping/APVMapping.h \
-		apv_mapping/APVStruct.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/APVMapping.o apv_mapping/APVMapping.cpp
+obj/Cube.o: geometry/src/Cube.cpp geometry/include/Cube.h \
+		include/Module.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/Cube.o geometry/src/Cube.cpp
 
-obj/APVStruct.o: apv_mapping/APVStruct.cpp apv_mapping/APVStruct.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/APVStruct.o apv_mapping/APVStruct.cpp
+obj/Trapezoid.o: geometry/src/Trapezoid.cpp geometry/include/Trapezoid.h \
+		include/Module.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/Trapezoid.o geometry/src/Trapezoid.cpp
+
+obj/Sphere.o: geometry/src/Sphere.cpp geometry/include/Sphere.h \
+		include/Module.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/Sphere.o geometry/src/Sphere.cpp
+
+obj/APVMapping.o: apv_mapping/src/APVMapping.cpp apv_mapping/include/APVMapping.h \
+		apv_mapping/include/APVStruct.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/APVMapping.o apv_mapping/src/APVMapping.cpp
+
+obj/APVStruct.o: apv_mapping/src/APVStruct.cpp apv_mapping/include/APVStruct.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/APVStruct.o apv_mapping/src/APVStruct.cpp
 
 obj/moc_OpenGLView.o: moc/moc_OpenGLView.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/moc_OpenGLView.o moc/moc_OpenGLView.cpp
