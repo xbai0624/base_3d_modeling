@@ -1,5 +1,7 @@
 .qmake.stash
 obj/*
+!obj/.gitkeep
 moc/*
+!moc/.gitkeep
 main
 *.swp
