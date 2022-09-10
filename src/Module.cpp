@@ -15,7 +15,7 @@ namespace base_cad
     // default ctor
     Module::Module()
     {
-        // place holder
+        name = "";
     }
 
     // copy ctor
@@ -23,7 +23,8 @@ namespace base_cad
         : m_module_triangles(m.m_module_triangles),
         m_module_triangle_vertex_index(m.m_module_triangle_vertex_index),
         m_module_triangle_edge_configs(m.m_module_triangle_edge_configs),
-        m_module_color(m.m_module_color)
+        m_module_color(m.m_module_color), m_module_name(m.m_module_name),
+        name(m.name)
     {
         // copy all modules referenced by pointers
         if(m.HasChild())
@@ -44,7 +45,8 @@ namespace base_cad
         : m_module(std::move(m.m_module)), m_module_triangles(std::move(m.m_module_triangles)),
         m_module_triangle_vertex_index(std::move(m.m_module_triangle_vertex_index)),
         m_module_triangle_edge_configs(m.m_module_triangle_edge_configs),
-        m_module_color(std::move(m.m_module_color))
+        m_module_color(std::move(m.m_module_color)), m_module_name(std::move(m.m_module_name)),
+        name(std::move(m.name))
     {
     }
 
@@ -71,6 +73,8 @@ namespace base_cad
         m_module_triangle_vertex_index = std::move(m.m_module_triangle_vertex_index);
         m_module_triangle_edge_configs = std::move(m.m_module_triangle_edge_configs);
         m_module_color = std::move(m.m_module_color);
+        m_module_name = std::move(m.m_module_name);
+        name = std::move(m.name);
 
         return *this;
     }
@@ -86,6 +90,8 @@ namespace base_cad
         m_module_triangle_vertex_index.clear();
         m_module_triangle_edge_configs.clear();
         m_module_color.clear();
+        m_module_name.clear();
+        name = "";
 
         if(HasChild())
         {
@@ -122,6 +128,7 @@ namespace base_cad
             assert(m_module_triangle_vertex_index.size() == index);
             assert(m_module_triangle_edge_configs.size() == index);
             assert(m_module_color.size() == index);
+            assert(m_module_name.size() == index);
 
             // AddModule() will make a copy of the original moudle
             m_module[index] = new Module(*m);
@@ -134,16 +141,20 @@ namespace base_cad
                 m -> GetModuleTriangleEdgeConfigs();
             const std::unordered_map<int, QColor> & colors =
                 m -> GetModuleColors();
+            const std::unordered_map<int, QString> &names =
+                m -> GetModuleNameMap();
 
             assert(triangles.size() == 1);
             assert(elements.size() == 1);
             assert(colors.size() == 1);
             assert(edges.size() == 1);
+            assert(names.size() == 1);
 
             m_module_triangles[index] =  triangles.at(0);
             m_module_triangle_vertex_index[index] = elements.at(0);
             m_module_triangle_edge_configs[index] = edges.at(0);
             m_module_color[index] = colors.at(0);
+            m_module_name[index] = names.at(0);
         }
         else
         {
@@ -175,6 +186,11 @@ namespace base_cad
         return m_module_color;
     }
 
+    const std::unordered_map<int, QString> & Module::GetModuleNameMap() const
+    {
+        return m_module_name;
+    }
+
     const std::unordered_map<int, std::vector<float>> & Module::GetModuleTriangleEdgeConfigs() const
     {
         return m_module_triangle_edge_configs;
@@ -183,6 +199,11 @@ namespace base_cad
     void Module::SetColor([[maybe_unused]] QColor c)
     {
         // place holder, this function should be implemented in subclass
+    }
+
+    void Module::SetName(QString _n)
+    {
+        name = _n;
     }
 
     int Module::GetNumberOfVertices()

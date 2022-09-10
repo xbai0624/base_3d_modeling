@@ -52,7 +52,7 @@ namespace base_cad
         x_half_width(m.x_half_width), y_half_width(m.y_half_width), z_half_width(m.z_half_width),
         x_rot(0), y_rot(0), z_rot(0),
         triangles(m.triangles), triangle_edge_config(m.triangle_edge_config),
-        triangle_vertex_index(m.triangle_vertex_index)
+        triangle_vertex_index(m.triangle_vertex_index), corner_coords(m.corner_coords)
     {
     }
 
@@ -62,7 +62,8 @@ namespace base_cad
         x_half_width(m.x_half_width), y_half_width(m.y_half_width), z_half_width(m.z_half_width),
         x_rot(0), y_rot(0), z_rot(0),
         triangles(std::move(m.triangles)), triangle_edge_config(std::move(m.triangle_edge_config)),
-        triangle_vertex_index(std::move(m.triangle_vertex_index))
+        triangle_vertex_index(std::move(m.triangle_vertex_index)),
+        corner_coords(std::move(m.corner_coords))
     {
     }
 
@@ -89,6 +90,7 @@ namespace base_cad
         triangles = std::move(m.triangles);
         triangle_edge_config = std::move(m.triangle_edge_config);
         triangle_vertex_index = std::move(m.triangle_vertex_index);
+        corner_coords = std::move(m.corner_coords);
 
         return *this;
     }
@@ -349,6 +351,8 @@ namespace base_cad
         m_module_triangle_edge_configs[0] = triangle_edge_config;
         // elements
         m_module_triangle_vertex_index[0] = triangle_vertex_index;
+        // names
+        m_module_name[0] = name;
     }
 
     void Cube::UnitTest()
