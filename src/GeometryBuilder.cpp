@@ -95,13 +95,13 @@ namespace base_cad
         // left 5-slot
         for(int i=0; i<5; i++) {
             Module tmp(*apv);
-            tmp.Transform(-28*unit, -25*unit + 4*unit + i*4*unit, 0);
+            tmp.Transform(-28*unit, -25*unit + 4*unit + i*4*unit, 2*unit);
             res -> AddModule(&tmp);
         }
         // right 5-slot
         for(int i=0; i<5; i++) {
             Module tmp(*apv);
-            tmp.Transform(28*unit, i*4*unit, 0);
+            tmp.Transform(28*unit, i*4*unit, 2*unit);
             res -> AddModule(&tmp);
         }
  

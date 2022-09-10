@@ -195,7 +195,7 @@ namespace base_cad
 
     void OpenGLView::wheelEvent(QWheelEvent *event)
     {
-        m_lastPos = event -> pos();
+        m_lastPos = event -> position().toPoint();
         QPoint numDegrees = event -> angleDelta();
         float y_rot = numDegrees.y()/8.;
 
