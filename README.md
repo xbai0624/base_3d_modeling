@@ -12,6 +12,9 @@ Designed for visualization of detector assembly.
 ## geometry demo:
 ![Screenshot](https://github.com/xbai0624/base_3d_modeling/blob/master/demo/ball_cube_trapezoid.png?raw=true)
 
+## geometry demo:
+![Screenshot](https://github.com/xbai0624/base_3d_modeling/blob/master/demo/demo_ball_tube.png?raw=true)
+
 
 # Acknowledgment:
 This project use the following program to parse json files:

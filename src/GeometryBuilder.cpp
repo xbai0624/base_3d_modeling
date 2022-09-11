@@ -124,7 +124,7 @@ namespace base_cad
         if( !__is_primitive(j))
         {
             // assembly module can be transformed as a whole
-            // primitive no need to transform as will be performed in __build_primitive()
+            // primitive no need to transform as that will be performed in __build_primitive()
             if(j.contains("coordinate")){
                 // position
                 float x = j.at("coordinate")[0].at("x").get<float>();
