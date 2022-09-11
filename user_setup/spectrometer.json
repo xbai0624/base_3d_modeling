@@ -1,0 +1,336 @@
+{
+    "world half length": 100,
+    "name": "spectrometer",
+    "type": "module",
+    "submodules": [
+        {
+            "name": "forward",
+            "type": "module",
+            "submodules": [
+                {
+                    "name": "sector1",
+                    "type": "module",
+                    "submodules": [
+                        {
+                            "name": "trapezoid_0",
+                            "type": "trapezoid",
+                            "dimension": [
+                                {"top_x_half_width": 2},
+                                {"top_y_half_width": 2},
+                                {"btm_x_half_width": 8},
+                                {"btm_y_half_width": 2},
+                                {"z_half_width": 10}
+                            ],
+                            "color": [
+                                {"r": 220},
+                                {"g": 155},
+                                {"b": 0}
+                            ],
+                            "coordinate": [
+                                {"x": 0},
+                                {"y": 0},
+                                {"z": 0}
+                            ],
+                            "rotation": [
+                                {"x_rot": 90},
+                                {"y_rot": 0},
+                                {"z_rot": 0}
+                            ]
+                        },
+                        {
+                            "name": "trapezoid_1",
+                            "type": "trapezoid",
+                            "dimension": [
+                                {"top_x_half_width": 10},
+                                {"top_y_half_width": 2},
+                                {"btm_x_half_width": 20},
+                                {"btm_y_half_width": 2},
+                                {"z_half_width": 20}
+                            ],
+                            "color": [
+                                {"r": 0},
+                                {"g": 155},
+                                {"b": 0}
+                            ],
+                            "coordinate": [
+                                {"x": 0},
+                                {"y": 35},
+                                {"z": 10}
+                            ],
+                            "rotation": [
+                                {"x_rot": 120},
+                                {"y_rot": 0},
+                                {"z_rot": 0}
+                            ]
+                        },
+                        {
+                            "name": "trapezoid_2",
+                            "type": "trapezoid",
+                            "dimension": [
+                                {"top_x_half_width": 25},
+                                {"top_y_half_width": 2},
+                                {"btm_x_half_width": 40},
+                                {"btm_y_half_width": 2},
+                                {"z_half_width": 40}
+                            ],
+                            "color": [
+                                {"r": 155},
+                                {"g": 155},
+                                {"b": 0}
+                            ],
+                            "coordinate": [
+                                {"x": 0},
+                                {"y": 80},
+                                {"z": 60}
+                            ],
+                            "rotation": [
+                                {"x_rot": 150},
+                                {"y_rot": 0},
+                                {"z_rot": 0}
+                            ]
+                        }
+                    ],
+                    "coordinate": [
+                        {"x": 0},
+                        {"y": 20},
+                        {"z": 0}
+                    ]
+                },
+                {
+                    "name": "sector2",
+                    "type": "sector1",
+                    "coordinate": [
+                        {"x": 0},
+                        {"y": 0},
+                        {"z": 0}
+                    ],
+                    "rotation": [
+                        {"x_rot": 0},
+                        {"y_rot": 0},
+                        {"z_rot": 45}
+                    ]
+                },
+                {
+                    "name": "sector3",
+                    "type": "sector1",
+                    "coordinate": [
+                        {"x": 0},
+                        {"y": 0},
+                        {"z": 0}
+                    ],
+                    "rotation": [
+                        {"x_rot": 0},
+                        {"y_rot": 0},
+                        {"z_rot": 90}
+                    ]
+                },
+                {
+                    "name": "sector3",
+                    "type": "sector1",
+                    "coordinate": [
+                        {"x": 0},
+                        {"y": 0},
+                        {"z": 0}
+                    ],
+                    "rotation": [
+                        {"x_rot": 0},
+                        {"y_rot": 0},
+                        {"z_rot": 135}
+                    ]
+                },
+                {
+                    "name": "sector3",
+                    "type": "sector1",
+                    "coordinate": [
+                        {"x": 0},
+                        {"y": 0},
+                        {"z": 0}
+                    ],
+                    "rotation": [
+                        {"x_rot": 0},
+                        {"y_rot": 0},
+                        {"z_rot": 180}
+                    ]
+                },
+                {
+                    "name": "sector3",
+                    "type": "sector1",
+                    "coordinate": [
+                        {"x": 0},
+                        {"y": 0},
+                        {"z": 0}
+                    ],
+                    "rotation": [
+                        {"x_rot": 0},
+                        {"y_rot": 0},
+                        {"z_rot": 225}
+                    ]
+                },
+                {
+                    "name": "sector3",
+                    "type": "sector1",
+                    "coordinate": [
+                        {"x": 0},
+                        {"y": 0},
+                        {"z": 0}
+                    ],
+                    "rotation": [
+                        {"x_rot": 0},
+                        {"y_rot": 0},
+                        {"z_rot": 270}
+                    ]
+                },
+                {
+                    "name": "sector3",
+                    "type": "sector1",
+                    "coordinate": [
+                        {"x": 0},
+                        {"y": 0},
+                        {"z": 0}
+                    ],
+                    "rotation": [
+                        {"x_rot": 0},
+                        {"y_rot": 0},
+                        {"z_rot": 315}
+                    ]
+                },
+                {
+                    "name": "tube_1",
+                    "type": "tube",
+                    "dimension": [
+                        {"r_min": 40},
+                        {"r_max": 44},
+                        {"z_half_width": 20},
+                        {"angle": 360}
+                    ],
+                    "color": [
+                        {"r": 255},
+                        {"g": 0},
+                        {"b": 100}
+                    ],
+                    "coordinate": [
+                        {"x": 0},
+                        {"y": 0},
+                        {"z": 100}
+                    ],
+                    "rotation": [
+                        {"x_rot": 0},
+                        {"y_rot": 0},
+                        {"z_rot": 0}
+                    ]
+                },
+                {
+                    "name": "tube_2",
+                    "type": "tube",
+                    "dimension": [
+                        {"r_min": 0},
+                        {"r_max": 25},
+                        {"z_half_width": 2},
+                        {"angle": 360}
+                    ],
+                    "color": [
+                        {"r": 255},
+                        {"g": 0},
+                        {"b": 0}
+                    ],
+                    "coordinate": [
+                        {"x": 0},
+                        {"y": 0},
+                        {"z": 40}
+                    ],
+                    "rotation": [
+                        {"x_rot": 0},
+                        {"y_rot": 0},
+                        {"z_rot": 0}
+                    ]
+                },
+                {
+                    "name": "tube_3",
+                    "type": "tube",
+                    "dimension": [
+                        {"r_min": 0},
+                        {"r_max": 10},
+                        {"z_half_width": 0.5},
+                        {"angle": 360}
+                    ],
+                    "color": [
+                        {"r": 0},
+                        {"g": 0},
+                        {"b": 255}
+                    ],
+                    "coordinate": [
+                        {"x": 0},
+                        {"y": 0},
+                        {"z": 10}
+                    ],
+                    "rotation": [
+                        {"x_rot": 0},
+                        {"y_rot": 0},
+                        {"z_rot": 0}
+                    ]
+                },
+                {
+                    "name": "tube_4",
+                    "type": "tube",
+                    "dimension": [
+                        {"r_min": 10},
+                        {"r_max": 14},
+                        {"z_half_width": 20},
+                        {"angle": 360}
+                    ],
+                    "color": [
+                        {"r": 100},
+                        {"g": 100},
+                        {"b": 200}
+                    ],
+                    "coordinate": [
+                        {"x": 0},
+                        {"y": 0},
+                        {"z": 150}
+                    ],
+                    "rotation": [
+                        {"x_rot": 0},
+                        {"y_rot": 0},
+                        {"z_rot": 0}
+                    ]
+                },
+                {
+                    "name": "ball1",
+                    "type": "sphere",
+                    "dimension": [
+                        {"radius": 10}
+                    ],
+                    "color": [
+                        {"r": 0},
+                        {"g": 255},
+                        {"b": 255}
+                    ],
+                    "coordinate": [
+                        {"x": 0},
+                        {"y": 0},
+                        {"z": 100}
+                    ],
+                    "rotation": [
+                        {"x_rot": 0},
+                        {"y_rot": 0},
+                        {"z_rot": 0}
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "backward",
+            "type": "forward",
+            "coordinate": [
+                {"x": 0},
+                {"y": 0},
+                {"z": 10}
+            ],
+            "rotation": [
+                {"x_rot": 180},
+                {"y_rot": 0},
+                {"z_rot": 0}
+            ]
+        }
+    ]
+}
