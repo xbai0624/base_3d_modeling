@@ -5,7 +5,7 @@
 TEMPLATE = app
 TARGET = main
 
-INCLUDEPATH += ./include ./apv_mapping/include ./geometry/include
+INCLUDEPATH += ./include ./apv_mapping/include ./geometry/include ./third_party/nlohmann
 
 QT += core gui widgets opengl
 CONFIG += 
@@ -50,6 +50,11 @@ SOURCES += \
            geometry/src/Cube.cpp \
            geometry/src/Trapezoid.cpp \
            geometry/src/Sphere.cpp \
+
+#json parser
+HEADERS += \
+           third_party/nlohmann/json.hpp \
+           third_party/nlohmann/json_fwd.hpp \
 
 # subsystem input
 HEADERS += \

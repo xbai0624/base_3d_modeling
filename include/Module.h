@@ -30,8 +30,11 @@ namespace base_cad
         const std::unordered_map<int, QColor> & GetModuleColors() const;
         const std::unordered_map<int, QString> & GetModuleNameMap() const;
         void Clear();
+        virtual void Init();
         virtual void SetColor(QColor c);
         virtual void SetName(QString name);
+        virtual void SetPosition(float x, float y, float z);
+        virtual void SetRotation(float x, float y, float z);
         int GetNumberOfVertices();
         virtual void Transform(float x_pos, float y_pos, float z_pos,
                 float x_rot=0., float y_rot = 0., float z_rot = 0.);

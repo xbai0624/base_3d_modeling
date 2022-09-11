@@ -6,17 +6,21 @@
 //        Xinzhan Bai, Sep 07, 2022                                           //
 ////////////////////////////////////////////////////////////////////////////////
 
+#include "json.hpp"
 #include "GeometryBuilder.h"
 #include "APVMapping.h"
 #include "Trapezoid.h"
 #include "Sphere.h"
 #include <iostream>
+#include <fstream>
 #include <QColor>
 
 namespace base_cad
 {
     GeometryBuilder::GeometryBuilder()
     {
+        path = "";
+        json_parser = new nlohmann::json;
     }
 
     GeometryBuilder::~GeometryBuilder()
@@ -27,7 +31,10 @@ namespace base_cad
     {
         map = apv_mapping::Mapping::Instance();
         map -> LoadMap(path);
+    }
 
+    void GeometryBuilder::Build()
+    {
         SetupVolume();
     }
 
@@ -51,9 +58,122 @@ namespace base_cad
         else
             assembly->Clear();
 
-        test_geometry();
+        BuildFromJsonFile();
+        //geometry_test();
     }
 
+    void GeometryBuilder::BuildFromJsonFile()
+    {
+        if(path.size() <= 0) {
+            nlohmann::json j;
+            std::ifstream tmp("user_setup/setup.json");
+
+            tmp >> j;
+
+            path = j["input file"], path = "user_setup/" + path;
+        }
+        std::cout<<"INFO:: "<<__PRETTY_FUNCTION__<<" loading from: "<<path<<std::endl;
+
+        std::ifstream j_file(path.c_str());
+        j_file >> (*json_parser);
+
+        build_geometry_from_json_file_impl();
+    } 
+
+    void GeometryBuilder::build_geometry_from_json_file_impl()
+    {
+        float world_half_length = json_parser->at("world half length").get<float>();
+        SetWorldHalfW(world_half_length);
+
+        assembly -> AddModule(__build(*json_parser));
+    }
+
+    Module* GeometryBuilder::__build(const nlohmann::json &j)
+    {
+        Module *m = new Module();
+
+        if(j.at("type").get<std::string>() == "module")
+        {
+            nlohmann::json submodules = j.at("submodules");
+            for(nlohmann::json & entry: submodules)
+            {
+                m -> AddModule(__build(entry));
+            }
+        }
+        else
+        {
+            m -> AddModule(__build_primitive(j));
+        }
+
+        std::string _name = j.at("name").get<std::string>();
+        m -> SetName(_name.c_str());
+
+        return m;
+    }
+
+    Module* GeometryBuilder::__build_primitive(const nlohmann::json &j)
+    {
+        if(j.contains("submodules")){
+            std::cout<<__PRETTY_FUNCTION__<<" ERROR: passed assembly to primitive builder."
+                <<std::endl;
+            exit(0);
+        }
+
+        Module *m;
+        std::string type = j.at("type").get<std::string>();
+        if(type == "cube")
+        {
+            float x_half = j.at("half length")[0].at("x_half").get<float>();
+            float y_half = j.at("half length")[1].at("y_half").get<float>();
+            float z_half = j.at("half length")[2].at("z_half").get<float>();
+            m = new Cube(x_half*unit, y_half*unit, z_half*unit);
+        }
+        else if(type == "sphere")
+        {
+            float r = j.at("radius").get<float>();
+            m = new Sphere(r*unit);
+        }
+        else if(type == "trapezoid")
+        {
+            m = new Trapezoid();
+        }
+        else {
+            std::cout<<__PRETTY_FUNCTION__<<" ERROR: unsupported gemotry: "
+                <<type<<std::endl;
+            exit(0);
+        }
+
+        // name
+        std::string name = j.at("name").get<std::string>();
+        m -> SetName(name.c_str());
+
+        // position
+        float x = j.at("coordinate")[0].at("x").get<float>();
+        float y = j.at("coordinate")[1].at("y").get<float>();
+        float z = j.at("coordinate")[2].at("z").get<float>();
+        m -> SetPosition(x*unit, y*unit, z*unit);
+
+        // rotation
+        x = j.at("rotation")[0].at("x_rot").get<float>();
+        x = j.at("rotation")[1].at("y_rot").get<float>();
+        x = j.at("rotation")[2].at("z_rot").get<float>();
+        m -> SetRotation(x, y, z);
+
+        // color
+        int r = j.at("color")[0].at("r").get<int>();
+        int g = j.at("color")[1].at("g").get<int>();
+        int b = j.at("color")[2].at("b").get<int>();
+        m -> SetColor(QColor(r, g, b));
+
+        m -> Init();
+
+        return m;
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////////////
+    //  following are private members for unit test                                         //
+    //////////////////////////////////////////////////////////////////////////////////////////
+ 
     Module* GeometryBuilder::build_chamber_test()
     {
         // an uva xy chamber
@@ -191,14 +311,14 @@ namespace base_cad
         return as;
     }
 
-    void GeometryBuilder::test_geometry()
+    void GeometryBuilder::geometry_test()
     {
-        auto test_assembly = [&]()
+        [[maybe_unused]] auto test_assembly = [&]()
         {
             assembly = build_assembly_test();
         };
 
-        auto test_cube = [&]()
+        [[maybe_unused]] auto test_cube = [&]()
         {
             Cube cube(0.5, 0.5, 0.5, 6, -6, 0);
             cube.SetColor(QColor(255, 255, 0));
@@ -208,7 +328,7 @@ namespace base_cad
             assembly -> AddModule(&cube);
         };
 
-        auto test_trapezoid = [&]()
+        [[maybe_unused]] auto test_trapezoid = [&]()
         {
             Trapezoid trapezoid1(1, 1, 4, 4, 3);
             trapezoid1.SetColor(QColor(255, 0, 0));
@@ -231,7 +351,7 @@ namespace base_cad
             assembly->AddModule(&trapezoid3);
         };
 
-        auto test_sphere = [&]()
+        [[maybe_unused]] auto test_sphere = [&]()
         {
             Sphere ball1(3, -10, 6, 0);
             ball1.SetColor(QColor(0,0,255));

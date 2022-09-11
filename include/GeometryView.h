@@ -2,6 +2,7 @@
 #define GEOMETRY_VIEW_H
 
 #include <QWidget>
+#include <string>
 
 namespace base_cad
 {
@@ -16,9 +17,13 @@ namespace base_cad
         GeometryView(QWidget *parent = nullptr);
         ~GeometryView();
 
+        void SetPath(const char *path);
+
     private:
         OpenGLView *gl_view;
         GeometryManager *geo_manager;
+
+        std::string input_path;
     };
 }
 

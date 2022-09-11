@@ -1,0 +1,24 @@
+{
+    "name": "cube_1",
+    "type": "cube",
+    "color": [
+        {"r": 0},
+        {"g": 155},
+        {"b": 0}
+    ],
+    "half length": [
+        {"x_half": 1},
+        {"y_half": 1},
+        {"z_half": 1}
+    ],
+    "coordinate": [
+        {"x": 4},
+        {"y": 4},
+        {"z": 4}
+    ],
+    "rotation": [
+        {"x_rot": 0},
+        {"y_rot": 0},
+        {"z_rot": 0}
+    ]
+}

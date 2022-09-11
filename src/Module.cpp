@@ -201,6 +201,21 @@ namespace base_cad
         // place holder, this function should be implemented in subclass
     }
 
+    void Module::SetPosition([[maybe_unused]] float x, [[maybe_unused]] float y, [[maybe_unused]] float z)
+    {
+        // place holder, this function should be implemented in subclass
+    }
+
+    void Module::SetRotation([[maybe_unused]] float x, [[maybe_unused]] float y, [[maybe_unused]] float z)
+    {
+        // place holder, this function should be implemented in subclass
+    }
+
+    void Module::Init()
+    {
+        // place holder, this function should be implemented in subclass
+    }
+
     void Module::SetName(QString _n)
     {
         name = _n;

@@ -1,0 +1,51 @@
+{
+    "name": "geometry demo",
+    "type": "module",
+    "world half length": 80,
+    "submodules": [
+        {
+            "name": "ball_1",
+            "type": "sphere",
+            "radius": 6,
+            "color": [
+                {"r": 255},
+                {"g": 0},
+                {"b": 0}
+            ],
+            "coordinate": [
+                {"x": 0},
+                {"y": 0},
+                {"z": 0}
+            ],
+            "rotation": [
+                {"x_rot": 0},
+                {"y_rot": 0},
+                {"z_rot": 0}
+            ]
+        },
+        {
+            "name": "cube_1",
+            "type": "cube",
+            "color": [
+                {"r": 0},
+                {"g": 155},
+                {"b": 0}
+            ],
+            "half length": [
+                {"x_half": 5},
+                {"y_half": 5},
+                {"z_half": 5}
+            ],
+            "coordinate": [
+                {"x": 20},
+                {"y": 20},
+                {"z": 20}
+            ],
+            "rotation": [
+                {"x_rot": 0},
+                {"y_rot": 0},
+                {"z_rot": 0}
+            ]
+        }
+    ]
+}

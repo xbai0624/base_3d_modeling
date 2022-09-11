@@ -31,13 +31,6 @@ namespace base_cad
 
     void GeometryManager::ReadGeometry()
     {
-        if(path.size() <= 0)
-        {
-            std::cerr<<__PRETTY_FUNCTION__<<" Error: empty path."
-                <<std::endl;
-            //exit(0); // debug
-        }
-
         load_text_file();
         convert_to_module();
         //convert_to_module_test();
@@ -47,12 +40,15 @@ namespace base_cad
     {
         if(geo_builder == nullptr)
             geo_builder = new GeometryBuilder();
+
+        if(path.size() > 0)
+            geo_builder -> SetTextFile(path.c_str());
+
+        geo_builder -> Build();
     }
 
     void GeometryManager::convert_to_module()
     {
-        geo_builder -> SetTextFile("database/gem_map_HALL_GeN-RP_Inline_All.txt");
-
         if(module != nullptr)
             module -> Clear();
 

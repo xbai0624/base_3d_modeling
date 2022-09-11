@@ -14,6 +14,7 @@
 namespace base_cad
 {
     GeometryView::GeometryView(QWidget *parent) : QWidget(parent)
+                                                  , input_path("")
     {
         setWindowTitle("geometry view");
 
@@ -28,5 +29,10 @@ namespace base_cad
 
     GeometryView::~GeometryView()
     {
+    }
+
+    void GeometryView::SetPath(const char* path)
+    {
+        input_path = path;
     }
 }

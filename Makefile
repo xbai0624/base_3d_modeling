@@ -17,7 +17,7 @@ CXX           = g++
 DEFINES       = -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -O2 -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
 CXXFLAGS      = -pipe -std=c++17 -O2 -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
-INCPATH       = -I. -Iinclude -Iapv_mapping/include -Igeometry/include -I/usr/include/qt5 -I/usr/include/qt5/QtOpenGL -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtCore -Imoc -I/../lib64/qt5/mkspecs/linux-g++
+INCPATH       = -I. -Iinclude -Iapv_mapping/include -Igeometry/include -Ithird_party/nlohmann -I/usr/include/qt5 -I/usr/include/qt5/QtOpenGL -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtCore -Imoc -I/../lib64/qt5/mkspecs/linux-g++
 QMAKE         = /usr/bin/qmake-qt5
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -164,6 +164,8 @@ DIST          = /../lib64/qt5/mkspecs/features/spec_pre.prf \
 		geometry/include/Cube.h \
 		geometry/include/Trapezoid.h \
 		geometry/include/Sphere.h \
+		third_party/nlohmann/json.hpp \
+		third_party/nlohmann/json_fwd.hpp \
 		apv_mapping/include/APVMapping.h \
 		apv_mapping/include/APVStruct.h src/main.cpp \
 		src/Module.cpp \
@@ -358,7 +360,7 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /../lib64/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents include/Module.h include/OpenGLView.h include/GeometryView.h include/GeometryManager.h include/GeometryBuilder.h include/UnitTest.h geometry/include/Cube.h geometry/include/Trapezoid.h geometry/include/Sphere.h apv_mapping/include/APVMapping.h apv_mapping/include/APVStruct.h $(DISTDIR)/
+	$(COPY_FILE) --parents include/Module.h include/OpenGLView.h include/GeometryView.h include/GeometryManager.h include/GeometryBuilder.h include/UnitTest.h geometry/include/Cube.h geometry/include/Trapezoid.h geometry/include/Sphere.h third_party/nlohmann/json.hpp third_party/nlohmann/json_fwd.hpp apv_mapping/include/APVMapping.h apv_mapping/include/APVStruct.h $(DISTDIR)/
 	$(COPY_FILE) --parents src/main.cpp src/Module.cpp src/OpenGLView.cpp src/GeometryView.cpp src/GeometryManager.cpp src/GeometryBuilder.cpp src/UnitTest.cpp geometry/src/Cube.cpp geometry/src/Trapezoid.cpp geometry/src/Sphere.cpp apv_mapping/src/APVMapping.cpp apv_mapping/src/APVStruct.cpp $(DISTDIR)/
 
 
@@ -397,12 +399,12 @@ compiler_moc_header_clean:
 moc/moc_OpenGLView.cpp: include/OpenGLView.h \
 		moc/moc_predefs.h \
 		/../lib64/qt5/bin/moc
-	/../lib64/qt5/bin/moc $(DEFINES) --include /home/xinzhan/test/base_3d_modeling/moc/moc_predefs.h -I/../lib64/qt5/mkspecs/linux-g++ -I/home/xinzhan/test/base_3d_modeling -I/home/xinzhan/test/base_3d_modeling/include -I/home/xinzhan/test/base_3d_modeling/apv_mapping/include -I/home/xinzhan/test/base_3d_modeling/geometry/include -I/usr/include/qt5 -I/usr/include/qt5/QtOpenGL -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtCore -I/usr/include/c++/8 -I/usr/include/c++/8/x86_64-redhat-linux -I/usr/include/c++/8/backward -I/usr/lib/gcc/x86_64-redhat-linux/8/include -I/usr/local/include -I/usr/include include/OpenGLView.h -o moc/moc_OpenGLView.cpp
+	/../lib64/qt5/bin/moc $(DEFINES) --include /home/xinzhan/test/base_3d_modeling/moc/moc_predefs.h -I/../lib64/qt5/mkspecs/linux-g++ -I/home/xinzhan/test/base_3d_modeling -I/home/xinzhan/test/base_3d_modeling/include -I/home/xinzhan/test/base_3d_modeling/apv_mapping/include -I/home/xinzhan/test/base_3d_modeling/geometry/include -I/home/xinzhan/test/base_3d_modeling/third_party/nlohmann -I/usr/include/qt5 -I/usr/include/qt5/QtOpenGL -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtCore -I/usr/include/c++/8 -I/usr/include/c++/8/x86_64-redhat-linux -I/usr/include/c++/8/backward -I/usr/lib/gcc/x86_64-redhat-linux/8/include -I/usr/local/include -I/usr/include include/OpenGLView.h -o moc/moc_OpenGLView.cpp
 
 moc/moc_GeometryView.cpp: include/GeometryView.h \
 		moc/moc_predefs.h \
 		/../lib64/qt5/bin/moc
-	/../lib64/qt5/bin/moc $(DEFINES) --include /home/xinzhan/test/base_3d_modeling/moc/moc_predefs.h -I/../lib64/qt5/mkspecs/linux-g++ -I/home/xinzhan/test/base_3d_modeling -I/home/xinzhan/test/base_3d_modeling/include -I/home/xinzhan/test/base_3d_modeling/apv_mapping/include -I/home/xinzhan/test/base_3d_modeling/geometry/include -I/usr/include/qt5 -I/usr/include/qt5/QtOpenGL -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtCore -I/usr/include/c++/8 -I/usr/include/c++/8/x86_64-redhat-linux -I/usr/include/c++/8/backward -I/usr/lib/gcc/x86_64-redhat-linux/8/include -I/usr/local/include -I/usr/include include/GeometryView.h -o moc/moc_GeometryView.cpp
+	/../lib64/qt5/bin/moc $(DEFINES) --include /home/xinzhan/test/base_3d_modeling/moc/moc_predefs.h -I/../lib64/qt5/mkspecs/linux-g++ -I/home/xinzhan/test/base_3d_modeling -I/home/xinzhan/test/base_3d_modeling/include -I/home/xinzhan/test/base_3d_modeling/apv_mapping/include -I/home/xinzhan/test/base_3d_modeling/geometry/include -I/home/xinzhan/test/base_3d_modeling/third_party/nlohmann -I/usr/include/qt5 -I/usr/include/qt5/QtOpenGL -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtCore -I/usr/include/c++/8 -I/usr/include/c++/8/x86_64-redhat-linux -I/usr/include/c++/8/backward -I/usr/lib/gcc/x86_64-redhat-linux/8/include -I/usr/local/include -I/usr/include include/GeometryView.h -o moc/moc_GeometryView.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -456,7 +458,8 @@ obj/GeometryManager.o: src/GeometryManager.cpp include/GeometryManager.h \
 		apv_mapping/include/APVStruct.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/GeometryManager.o src/GeometryManager.cpp
 
-obj/GeometryBuilder.o: src/GeometryBuilder.cpp include/GeometryBuilder.h \
+obj/GeometryBuilder.o: src/GeometryBuilder.cpp third_party/nlohmann/json.hpp \
+		include/GeometryBuilder.h \
 		include/Module.h \
 		geometry/include/Cube.h \
 		apv_mapping/include/APVMapping.h \
