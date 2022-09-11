@@ -24,7 +24,7 @@ namespace base_cad
         Module operator=(const Module& m);
         Module operator=(Module &&m);
 
-        ~Module();
+        virtual ~Module();
 
         void AddModule(Module *m);
         const std::unordered_map<int, std::vector<QVector3D>> & GetModuleTriangles() const;

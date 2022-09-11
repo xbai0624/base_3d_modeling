@@ -37,6 +37,7 @@ namespace base_cad
         Module * GetCompleteAssembly() const;
         void SetWorldHalfW(float w);
         void Build();
+        void Clear();
 
     protected:
         void SetupVolume();
@@ -46,6 +47,9 @@ namespace base_cad
         void build_geometry_from_json_file_impl();
         Module* __build(const nlohmann::json &);
         Module* __build_primitive(const nlohmann::json &);
+        Module* __check_module_pool(const nlohmann::json&) const;
+        bool __is_primitive(const nlohmann::json&) const;
+
         // unit test
         Module * build_chamber_test();
         Module * build_apv_test();
@@ -66,6 +70,10 @@ namespace base_cad
         float unit = 0.001;
 
         nlohmann::json *json_parser;
+
+        // keep track of all modules in this geometry builder
+        std::vector<std::string> m_module_name_pool;
+        std::vector<Module*> m_module_pool;
     };
 }
 

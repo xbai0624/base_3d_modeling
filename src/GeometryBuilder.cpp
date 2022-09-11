@@ -26,6 +26,16 @@ namespace base_cad
     {
     }
 
+    void GeometryBuilder::Clear()
+    {
+        m_module_name_pool.clear();
+        m_module_pool.clear();
+
+        apv_volumes.clear();
+        apv_color.clear();
+        chamber_volumes.clear();
+    }
+
     void GeometryBuilder::SetTextFile(const char* path)
     {
         map = apv_mapping::Mapping::Instance();
@@ -100,14 +110,26 @@ namespace base_cad
             {
                 m -> AddModule(__build(entry));
             }
+        }
+        else if(__is_primitive(j))
+        {
+            m -> AddModule(__build_primitive(j));
+        }
+        else
+        {
+            delete m;
+            m = __check_module_pool(j);
+        }
 
-            // module can be transformed as a whole
+        if( !__is_primitive(j))
+        {
+            // assembly module can be transformed as a whole
+            // primitive no need to transform as will be performed in __build_primitive()
             if(j.contains("coordinate")){
                 // position
                 float x = j.at("coordinate")[0].at("x").get<float>();
                 float y = j.at("coordinate")[1].at("y").get<float>();
                 float z = j.at("coordinate")[2].at("z").get<float>();
-                std::cout<<x*unit<<", "<<y*unit<<", "<<z*unit<<std::endl;
                 m -> Transform(x*unit, y*unit, z*unit, 0, 0, 0);
             }
             if(j.contains("rotation")){
@@ -118,13 +140,12 @@ namespace base_cad
                 m -> Transform(0, 0, 0, x, y, z);
             }
         }
-        else
-        {
-            m -> AddModule(__build_primitive(j));
-        }
 
-        //std::string _name = j.at("name").get<std::string>();
-        //m -> SetName(_name.c_str());
+        std::string _name = j.at("name").get<std::string>();
+        m -> SetName(_name.c_str());
+
+        m_module_pool.push_back(m);
+        m_module_name_pool.push_back(_name);
 
         return m;
     }
@@ -194,6 +215,38 @@ namespace base_cad
         m -> Init();
 
         return m;
+    }
+
+    bool GeometryBuilder::__is_primitive(const nlohmann::json &j) const
+    {
+        std::string type = j.at("type").get<std::string>();
+
+        if(type == "cube" || type == "sphere" || type == "trapezoid" || 
+                type == "tube")
+            return true;
+
+        return false;
+    }
+
+    Module * GeometryBuilder::__check_module_pool(const nlohmann::json &j) const
+    {
+        std::string type = j.at("type").get<std::string>();
+
+        size_t loc;
+        bool found = false;
+        for(size_t i=0; i<m_module_name_pool.size(); i++)
+        {
+            if(type == m_module_name_pool[i]) {
+                found = true;
+                loc = i;
+            }
+        }
+
+        if(!found) return nullptr;
+
+        Module *res = new Module(*(m_module_pool[loc]));
+
+        return res;
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////
