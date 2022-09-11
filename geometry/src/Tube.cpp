@@ -236,7 +236,6 @@ namespace base_cad
     void Tube::GenerateTriangles()
     {
         int N = (int)corner_coords.size();
-        std::cout<<"total vertices: "<<N<<std::endl;
         assert(N % 8 == 0);
         N /= 8;
         for(int i=0; i<N; i++)

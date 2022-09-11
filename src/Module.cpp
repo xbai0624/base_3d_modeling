@@ -118,7 +118,7 @@ namespace base_cad
 
     void Module::AddModule(Module *m)
     {
-        if(m -> IsEmpty())
+        if(m == nullptr || m -> IsEmpty())
             return;
 
         if(!(m -> HasChild()))

@@ -58,7 +58,7 @@ namespace base_cad
             assembly->Clear();
 
         BuildFromJsonFile();
-        geometry_test();
+        //geometry_test();
     }
 
     void GeometryBuilder::BuildFromJsonFile()
@@ -91,12 +91,31 @@ namespace base_cad
     {
         Module *m = new Module();
 
+        if(j.empty()) return m;
+
         if(j.at("type").get<std::string>() == "module")
         {
             nlohmann::json submodules = j.at("submodules");
             for(nlohmann::json & entry: submodules)
             {
                 m -> AddModule(__build(entry));
+            }
+
+            // module can be transformed as a whole
+            if(j.contains("coordinate")){
+                // position
+                float x = j.at("coordinate")[0].at("x").get<float>();
+                float y = j.at("coordinate")[1].at("y").get<float>();
+                float z = j.at("coordinate")[2].at("z").get<float>();
+                std::cout<<x*unit<<", "<<y*unit<<", "<<z*unit<<std::endl;
+                m -> Transform(x*unit, y*unit, z*unit, 0, 0, 0);
+            }
+            if(j.contains("rotation")){
+                // rotation
+                float x = j.at("rotation")[0].at("x_rot").get<float>();
+                float y = j.at("rotation")[1].at("y_rot").get<float>();
+                float z = j.at("rotation")[2].at("z_rot").get<float>();
+                m -> Transform(0, 0, 0, x, y, z);
             }
         }
         else
@@ -162,8 +181,8 @@ namespace base_cad
 
         // rotation
         x = j.at("rotation")[0].at("x_rot").get<float>();
-        x = j.at("rotation")[1].at("y_rot").get<float>();
-        x = j.at("rotation")[2].at("z_rot").get<float>();
+        y = j.at("rotation")[1].at("y_rot").get<float>();
+        z = j.at("rotation")[2].at("z_rot").get<float>();
         m -> SetRotation(x, y, z);
 
         // color
