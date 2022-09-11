@@ -41,11 +41,11 @@
       in the above setup, "bottom_volume" does not need a "submodules" section, because
       its "type" property is set to "top_volume", in this case the program will just
       make a copy of "top_volume" and tranlate it to the specified "coordinate".
-      This will make writing json files much easier
+      This will make writing json files much easier.
 
       ***NOTE:
       the "coordinate" for "bottom_volume" should be checked carefully, keep in mind that
       all transformation is in "module-local" coordinate, so suppose "top_volume" is located
       in (x0, y0, z0), if you want to place "bottom_volume" (a copy of the "top_volume") to
       (x1, y1, z1), then the "coordinate" for "bottom_volume" should be:
-      (x1-x0, y1-y0, z1-z0).
+      (x1-x0, y1-y0, z1-z0). This applies to the "rotation" property as well.
