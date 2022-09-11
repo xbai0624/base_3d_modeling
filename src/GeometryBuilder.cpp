@@ -59,7 +59,7 @@ namespace base_cad
             assembly->Clear();
 
         BuildFromJsonFile();
-        geometry_test();
+        //geometry_test();
     }
 
     void GeometryBuilder::BuildFromJsonFile()

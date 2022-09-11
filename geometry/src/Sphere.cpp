@@ -14,8 +14,8 @@
 namespace base_cad
 {
     // control how smooth the ball is, larger number means finer surface
-    #define Phi_Bins 40
-    #define Theta_Bins 40
+    #define Phi_Bins 20
+    #define Theta_Bins 20
     #define PI 3.14159265358979323846264
 
     Sphere::Sphere() : r(0),
@@ -163,14 +163,11 @@ namespace base_cad
             z = r * cos(theta*radian);
             x = abs(r * sin(theta*radian)) * cos(phi*radian);
             y = abs(r * sin(theta*radian)) * sin(phi*radian);
-            if(theta < 0.) {
-                z = -z;
-            }
         };
 
         for(int i=0; i<Theta_Bins; i++)
         {
-            float theta_low = -90. + i*dTheta;
+            float theta_low = i*dTheta;
             float theta_high = theta_low + dTheta;
 
             for(int j=0; j<Phi_Bins; j++)
@@ -178,7 +175,6 @@ namespace base_cad
                 float phi_low = j*dPhi, phi_high = (j+1.0)*dPhi;
 
                 float x, y, z;
-
                 // point 0
                 compute_xyz(theta_low, phi_low, x, y, z);
                 corner_coords.push_back(QVector3D(x, y, z));
@@ -253,18 +249,18 @@ namespace base_cad
             int idx = 4 * i;
 
             triangles.push_back(corner_coords[idx]);
-            triangle_edge_config.push_back(1); // for sphere, edge should always be hidden
+            HIDE_EDGE; // for sphere, edge should always be hidden
             triangles.push_back(corner_coords[idx+1]);
-            triangle_edge_config.push_back(1);
+            HIDE_EDGE;
             triangles.push_back(corner_coords[idx+2]);
-            triangle_edge_config.push_back(1);
+            HIDE_EDGE;
 
             triangles.push_back(corner_coords[idx+1]);
-            triangle_edge_config.push_back(1);
+            HIDE_EDGE;
             triangles.push_back(corner_coords[idx+2]);
-            triangle_edge_config.push_back(1);
+            HIDE_EDGE;
             triangles.push_back(corner_coords[idx+3]);
-            triangle_edge_config.push_back(1);
+            HIDE_EDGE;
         }
     }
 

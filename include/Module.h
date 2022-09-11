@@ -12,6 +12,9 @@ namespace base_cad
     #define SHOW_WIRE_FRAME 0
     #define HIDE_WIRE_FRAME 1
 
+    #define SHOW_EDGE triangle_edge_config.push_back(SHOW_WIRE_FRAME)
+    #define HIDE_EDGE triangle_edge_config.push_back(HIDE_WIRE_FRAME)
+
     class Module
     {
     public:

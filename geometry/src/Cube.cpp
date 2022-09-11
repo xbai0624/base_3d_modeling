@@ -216,93 +216,93 @@ namespace base_cad
     {
         // front face - two triangles compose one face
         triangles.push_back(corner_coords[0]);
-        triangle_edge_config.push_back(1);
+        HIDE_EDGE;
         triangles.push_back(corner_coords[1]);
-        triangle_edge_config.push_back(0);
+        SHOW_EDGE;
         triangles.push_back(corner_coords[3]);
-        triangle_edge_config.push_back(0);
+        SHOW_EDGE;
 
         triangles.push_back(corner_coords[1]);
-        triangle_edge_config.push_back(0);
+        SHOW_EDGE;
         triangles.push_back(corner_coords[2]);
-        triangle_edge_config.push_back(1);
+        HIDE_EDGE;
         triangles.push_back(corner_coords[3]);
-        triangle_edge_config.push_back(0);
+        SHOW_EDGE;
 
         // right face
         triangles.push_back(corner_coords[1]);
-        triangle_edge_config.push_back(1);
+        HIDE_EDGE;
         triangles.push_back(corner_coords[4]);
-        triangle_edge_config.push_back(0);
+        SHOW_EDGE;
         triangles.push_back(corner_coords[2]);
-        triangle_edge_config.push_back(0);
+        SHOW_EDGE;
 
         triangles.push_back(corner_coords[4]);
-        triangle_edge_config.push_back(0);
+        SHOW_EDGE;
         triangles.push_back(corner_coords[5]);
-        triangle_edge_config.push_back(1);
+        HIDE_EDGE;
         triangles.push_back(corner_coords[2]);
-        triangle_edge_config.push_back(0);
+        SHOW_EDGE;
 
         // back face
         triangles.push_back(corner_coords[4]);
-        triangle_edge_config.push_back(0);
+        SHOW_EDGE;
         triangles.push_back(corner_coords[6]);
-        triangle_edge_config.push_back(0);
+        SHOW_EDGE;
         triangles.push_back(corner_coords[5]);
-        triangle_edge_config.push_back(1);
+        HIDE_EDGE;
 
         triangles.push_back(corner_coords[4]);
-        triangle_edge_config.push_back(0);
+        SHOW_EDGE;
         triangles.push_back(corner_coords[7]);
-        triangle_edge_config.push_back(1);
+        HIDE_EDGE;
         triangles.push_back(corner_coords[6]);
-        triangle_edge_config.push_back(0);
+        SHOW_EDGE;
 
         // left face
         triangles.push_back(corner_coords[0]);
-        triangle_edge_config.push_back(1);
+        HIDE_EDGE;
         triangles.push_back(corner_coords[3]);
-        triangle_edge_config.push_back(0);
+        SHOW_EDGE;
         triangles.push_back(corner_coords[7]);
-        triangle_edge_config.push_back(0);
+        SHOW_EDGE;
 
         triangles.push_back(corner_coords[3]);
-        triangle_edge_config.push_back(0);
+        SHOW_EDGE;
         triangles.push_back(corner_coords[6]);
-        triangle_edge_config.push_back(1);
+        HIDE_EDGE;
         triangles.push_back(corner_coords[7]);
-        triangle_edge_config.push_back(0);
+        SHOW_EDGE;
 
         // top face
         triangles.push_back(corner_coords[2]);
-        triangle_edge_config.push_back(0);
+        SHOW_EDGE;
         triangles.push_back(corner_coords[6]);
-        triangle_edge_config.push_back(0);
+        SHOW_EDGE;
         triangles.push_back(corner_coords[3]);
-        triangle_edge_config.push_back(1);
+        HIDE_EDGE;
 
         triangles.push_back(corner_coords[2]);
-        triangle_edge_config.push_back(0);
+        SHOW_EDGE;
         triangles.push_back(corner_coords[5]);
-        triangle_edge_config.push_back(1);
+        HIDE_EDGE;
         triangles.push_back(corner_coords[6]);
-        triangle_edge_config.push_back(0);
+        SHOW_EDGE;
 
         // bottom face
         triangles.push_back(corner_coords[1]);
-        triangle_edge_config.push_back(0);
+        SHOW_EDGE;
         triangles.push_back(corner_coords[0]);
-        triangle_edge_config.push_back(1);
+        HIDE_EDGE;
         triangles.push_back(corner_coords[7]);
-        triangle_edge_config.push_back(0);
+        SHOW_EDGE;
 
         triangles.push_back(corner_coords[1]);
-        triangle_edge_config.push_back(0);
+        SHOW_EDGE;
         triangles.push_back(corner_coords[7]);
-        triangle_edge_config.push_back(0);
+        SHOW_EDGE;
         triangles.push_back(corner_coords[4]);
-        triangle_edge_config.push_back(1);
+        HIDE_EDGE;
     }
 
     void Cube::GenerateTriangleVertexIndex()

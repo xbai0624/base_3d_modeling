@@ -1,0 +1,21 @@
+{
+    "world half length": 10,
+    "name": "ball_1",
+    "type": "sphere",
+    "radius": 10,
+    "color": [
+        {"r": 0},
+        {"g": 155},
+        {"b": 0}
+    ],
+    "coordinate": [
+        {"x": 0},
+        {"y": 0},
+        {"z": 0}
+    ],
+    "rotation": [
+        {"x_rot": 0},
+        {"y_rot": 0},
+        {"z_rot": 0}
+    ]
+}
