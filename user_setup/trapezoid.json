@@ -1,12 +1,13 @@
 {
     "world half length": 80,
-    "name": "tube_1",
-    "type": "tube",
+    "name": "trapezoid_1",
+    "type": "trapezoid",
     "dimension": [
-        {"r_min": 10},
-        {"r_max": 20},
-        {"z_half_width": 4},
-        {"angle": 360}
+        {"top_x_half_width": 10},
+        {"top_y_half_width": 1},
+        {"btm_x_half_width": 20},
+        {"btm_y_half_width": 1},
+        {"z_half_width": 20}
     ],
     "color": [
         {"r": 0},
@@ -19,7 +20,7 @@
         {"z": 0}
     ],
     "rotation": [
-        {"x_rot": 0},
+        {"x_rot": -90},
         {"y_rot": 0},
         {"z_rot": 0}
     ]

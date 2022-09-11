@@ -2,7 +2,9 @@
     "world half length": 10,
     "name": "ball_1",
     "type": "sphere",
-    "radius": 10,
+    "dimension": [
+        {"radius": 10}
+    ],
     "color": [
         {"r": 0},
         {"g": 155},

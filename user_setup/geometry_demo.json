@@ -6,7 +6,9 @@
         {
             "name": "ball_1",
             "type": "sphere",
-            "radius": 6,
+            "dimension": [
+                {"radius": 6}
+            ],
             "color": [
                 {"r": 255},
                 {"g": 0},
@@ -31,7 +33,7 @@
                 {"g": 155},
                 {"b": 0}
             ],
-            "half length": [
+            "dimension": [
                 {"x_half": 5},
                 {"y_half": 5},
                 {"z_half": 5}

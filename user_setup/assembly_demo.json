@@ -10,10 +10,12 @@
                 {
                     "name": "tube_1",
                     "type": "tube",
-                    "r_min": 10,
-                    "r_max": 20,
-                    "z_half_width": 4,
-                    "angle": 360,
+                    "dimension": [
+                        {"r_min": 10},
+                        {"r_max": 20},
+                        {"z_half_width": 4},
+                        {"angle": 360}
+                    ],
                     "color": [
                         {"r": 0},
                         {"g": 155},
@@ -33,7 +35,9 @@
                 {
                     "name": "ball_1",
                     "type": "sphere",
-                    "radius": 10,
+                    "dimension": [
+                        {"radius": 10}
+                    ],
                     "color": [
                         {"r": 255},
                         {"g": 155},

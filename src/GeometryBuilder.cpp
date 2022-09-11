@@ -162,26 +162,31 @@ namespace base_cad
         std::string type = j.at("type").get<std::string>();
         if(type == "cube")
         {
-            float x_half = j.at("half length")[0].at("x_half").get<float>();
-            float y_half = j.at("half length")[1].at("y_half").get<float>();
-            float z_half = j.at("half length")[2].at("z_half").get<float>();
+            float x_half = j.at("dimension")[0].at("x_half").get<float>();
+            float y_half = j.at("dimension")[1].at("y_half").get<float>();
+            float z_half = j.at("dimension")[2].at("z_half").get<float>();
             m = new Cube(x_half*unit, y_half*unit, z_half*unit);
         }
         else if(type == "sphere")
         {
-            float r = j.at("radius").get<float>();
+            float r = j.at("dimension")[0].at("radius").get<float>();
             m = new Sphere(r*unit);
         }
         else if(type == "trapezoid")
         {
-            m = new Trapezoid();
+            float top_x_half = j.at("dimension")[0].at("top_x_half_width").get<float>();
+            float top_y_half = j.at("dimension")[1].at("top_y_half_width").get<float>();
+            float btm_x_half = j.at("dimension")[2].at("btm_x_half_width").get<float>();
+            float btm_y_half = j.at("dimension")[3].at("btm_y_half_width").get<float>();
+            float z_half = j.at("dimension")[4].at("z_half_width").get<float>();
+            m = new Trapezoid(top_x_half*unit, top_y_half*unit, btm_x_half*unit, btm_y_half*unit, z_half*unit);
         }
         else if(type == "tube")
         {
-            float r_min = j.at("r_min").get<float>();
-            float r_max = j.at("r_max").get<float>();
-            float z_half = j.at("z_half_width").get<float>();
-            float angle = j.at("angle").get<float>();
+            float r_min = j.at("dimension")[0].at("r_min").get<float>();
+            float r_max = j.at("dimension")[1].at("r_max").get<float>();
+            float z_half = j.at("dimension")[2].at("z_half_width").get<float>();
+            float angle = j.at("dimension")[3].at("angle").get<float>();
             m = new Tube(r_min*unit, r_max*unit, z_half*unit, angle);
         }
         else {

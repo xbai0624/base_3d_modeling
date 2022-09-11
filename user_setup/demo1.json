@@ -1,12 +1,13 @@
 {
     "name": "cube_1",
     "type": "cube",
+    "world half length": 5,
     "color": [
         {"r": 0},
         {"g": 155},
         {"b": 0}
     ],
-    "half length": [
+    "dimension": [
         {"x_half": 1},
         {"y_half": 1},
         {"z_half": 1}
