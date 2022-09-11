@@ -29,6 +29,7 @@ HEADERS += \
            include/GeometryView.h \
            include/GeometryManager.h \
            include/GeometryBuilder.h \
+           include/Geometry.h \
            include/UnitTest.h \
 
 SOURCES += \
@@ -45,11 +46,13 @@ HEADERS += \
            geometry/include/Cube.h \
            geometry/include/Trapezoid.h \
            geometry/include/Sphere.h \
+           geometry/include/Tube.h \
 
 SOURCES += \
            geometry/src/Cube.cpp \
            geometry/src/Trapezoid.cpp \
            geometry/src/Sphere.cpp \
+           geometry/src/Tube.cpp \
 
 #json parser
 HEADERS += \

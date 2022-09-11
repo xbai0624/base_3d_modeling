@@ -1,0 +1,24 @@
+{
+    "world half length": 80,
+    "name": "tube_1",
+    "type": "tube",
+    "r_min": 0,
+    "r_max": 20,
+    "z_half_width": 4,
+    "angle": 160,
+    "color": [
+        {"r": 0},
+        {"g": 155},
+        {"b": 0}
+    ],
+    "coordinate": [
+        {"x": 0},
+        {"y": 0},
+        {"z": 0}
+    ],
+    "rotation": [
+        {"x_rot": 0},
+        {"y_rot": 0},
+        {"z_rot": 0}
+    ]
+}

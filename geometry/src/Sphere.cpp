@@ -52,7 +52,7 @@ namespace base_cad
         Module(m),
         position(m.position),
         r(m.r),
-        x_rot(0), y_rot(0), z_rot(0),
+        x_rot(m.x_rot), y_rot(m.y_rot), z_rot(m.z_rot),
         triangles(m.triangles), triangle_edge_config(m.triangle_edge_config),
         triangle_vertex_index(m.triangle_vertex_index), corner_coords(m.corner_coords)
     {
@@ -62,7 +62,7 @@ namespace base_cad
         Module(m),
         position(std::move(m.position)),
         r(m.r),
-        x_rot(0), y_rot(0), z_rot(0),
+        x_rot(m.x_rot), y_rot(m.y_rot), z_rot(m.z_rot),
         triangles(std::move(m.triangles)), triangle_edge_config(std::move(m.triangle_edge_config)),
         triangle_vertex_index(std::move(m.triangle_vertex_index)),
         corner_coords(std::move(m.corner_coords))

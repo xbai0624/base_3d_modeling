@@ -62,6 +62,7 @@ SOURCES       = src/main.cpp \
 		geometry/src/Cube.cpp \
 		geometry/src/Trapezoid.cpp \
 		geometry/src/Sphere.cpp \
+		geometry/src/Tube.cpp \
 		apv_mapping/src/APVMapping.cpp \
 		apv_mapping/src/APVStruct.cpp moc/moc_OpenGLView.cpp \
 		moc/moc_GeometryView.cpp
@@ -75,6 +76,7 @@ OBJECTS       = obj/main.o \
 		obj/Cube.o \
 		obj/Trapezoid.o \
 		obj/Sphere.o \
+		obj/Tube.o \
 		obj/APVMapping.o \
 		obj/APVStruct.o \
 		obj/moc_OpenGLView.o \
@@ -160,10 +162,12 @@ DIST          = /../lib64/qt5/mkspecs/features/spec_pre.prf \
 		include/GeometryView.h \
 		include/GeometryManager.h \
 		include/GeometryBuilder.h \
+		include/Geometry.h \
 		include/UnitTest.h \
 		geometry/include/Cube.h \
 		geometry/include/Trapezoid.h \
 		geometry/include/Sphere.h \
+		geometry/include/Tube.h \
 		third_party/nlohmann/json.hpp \
 		third_party/nlohmann/json_fwd.hpp \
 		apv_mapping/include/APVMapping.h \
@@ -177,6 +181,7 @@ DIST          = /../lib64/qt5/mkspecs/features/spec_pre.prf \
 		geometry/src/Cube.cpp \
 		geometry/src/Trapezoid.cpp \
 		geometry/src/Sphere.cpp \
+		geometry/src/Tube.cpp \
 		apv_mapping/src/APVMapping.cpp \
 		apv_mapping/src/APVStruct.cpp
 QMAKE_TARGET  = main
@@ -360,8 +365,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /../lib64/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents include/Module.h include/OpenGLView.h include/GeometryView.h include/GeometryManager.h include/GeometryBuilder.h include/UnitTest.h geometry/include/Cube.h geometry/include/Trapezoid.h geometry/include/Sphere.h third_party/nlohmann/json.hpp third_party/nlohmann/json_fwd.hpp apv_mapping/include/APVMapping.h apv_mapping/include/APVStruct.h $(DISTDIR)/
-	$(COPY_FILE) --parents src/main.cpp src/Module.cpp src/OpenGLView.cpp src/GeometryView.cpp src/GeometryManager.cpp src/GeometryBuilder.cpp src/UnitTest.cpp geometry/src/Cube.cpp geometry/src/Trapezoid.cpp geometry/src/Sphere.cpp apv_mapping/src/APVMapping.cpp apv_mapping/src/APVStruct.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents include/Module.h include/OpenGLView.h include/GeometryView.h include/GeometryManager.h include/GeometryBuilder.h include/Geometry.h include/UnitTest.h geometry/include/Cube.h geometry/include/Trapezoid.h geometry/include/Sphere.h geometry/include/Tube.h third_party/nlohmann/json.hpp third_party/nlohmann/json_fwd.hpp apv_mapping/include/APVMapping.h apv_mapping/include/APVStruct.h $(DISTDIR)/
+	$(COPY_FILE) --parents src/main.cpp src/Module.cpp src/OpenGLView.cpp src/GeometryView.cpp src/GeometryManager.cpp src/GeometryBuilder.cpp src/UnitTest.cpp geometry/src/Cube.cpp geometry/src/Trapezoid.cpp geometry/src/Sphere.cpp geometry/src/Tube.cpp apv_mapping/src/APVMapping.cpp apv_mapping/src/APVStruct.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -437,7 +442,8 @@ obj/OpenGLView.o: src/OpenGLView.cpp include/OpenGLView.h \
 		include/GeometryBuilder.h \
 		geometry/include/Cube.h \
 		apv_mapping/include/APVMapping.h \
-		apv_mapping/include/APVStruct.h
+		apv_mapping/include/APVStruct.h \
+		third_party/nlohmann/json_fwd.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/OpenGLView.o src/OpenGLView.cpp
 
 obj/GeometryView.o: src/GeometryView.cpp include/GeometryView.h \
@@ -447,7 +453,8 @@ obj/GeometryView.o: src/GeometryView.cpp include/GeometryView.h \
 		include/Module.h \
 		geometry/include/Cube.h \
 		apv_mapping/include/APVMapping.h \
-		apv_mapping/include/APVStruct.h
+		apv_mapping/include/APVStruct.h \
+		third_party/nlohmann/json_fwd.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/GeometryView.o src/GeometryView.cpp
 
 obj/GeometryManager.o: src/GeometryManager.cpp include/GeometryManager.h \
@@ -455,7 +462,8 @@ obj/GeometryManager.o: src/GeometryManager.cpp include/GeometryManager.h \
 		include/Module.h \
 		geometry/include/Cube.h \
 		apv_mapping/include/APVMapping.h \
-		apv_mapping/include/APVStruct.h
+		apv_mapping/include/APVStruct.h \
+		third_party/nlohmann/json_fwd.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/GeometryManager.o src/GeometryManager.cpp
 
 obj/GeometryBuilder.o: src/GeometryBuilder.cpp third_party/nlohmann/json.hpp \
@@ -464,8 +472,11 @@ obj/GeometryBuilder.o: src/GeometryBuilder.cpp third_party/nlohmann/json.hpp \
 		geometry/include/Cube.h \
 		apv_mapping/include/APVMapping.h \
 		apv_mapping/include/APVStruct.h \
+		third_party/nlohmann/json_fwd.hpp \
+		include/Geometry.h \
+		geometry/include/Sphere.h \
 		geometry/include/Trapezoid.h \
-		geometry/include/Sphere.h
+		geometry/include/Tube.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/GeometryBuilder.o src/GeometryBuilder.cpp
 
 obj/UnitTest.o: src/UnitTest.cpp include/UnitTest.h \
@@ -484,6 +495,10 @@ obj/Trapezoid.o: geometry/src/Trapezoid.cpp geometry/include/Trapezoid.h \
 obj/Sphere.o: geometry/src/Sphere.cpp geometry/include/Sphere.h \
 		include/Module.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/Sphere.o geometry/src/Sphere.cpp
+
+obj/Tube.o: geometry/src/Tube.cpp geometry/include/Tube.h \
+		include/Module.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/Tube.o geometry/src/Tube.cpp
 
 obj/APVMapping.o: apv_mapping/src/APVMapping.cpp apv_mapping/include/APVMapping.h \
 		apv_mapping/include/APVStruct.h

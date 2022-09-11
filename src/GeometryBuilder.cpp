@@ -9,8 +9,7 @@
 #include "json.hpp"
 #include "GeometryBuilder.h"
 #include "APVMapping.h"
-#include "Trapezoid.h"
-#include "Sphere.h"
+#include "Geometry.h"
 #include <iostream>
 #include <fstream>
 #include <QColor>
@@ -51,7 +50,7 @@ namespace base_cad
 
     void GeometryBuilder::SetupVolume()
     {
-        SetWorldHalfW(90);
+        ///SetWorldHalfW(90);
 
         if(assembly == nullptr)
             assembly = new Module();
@@ -59,7 +58,7 @@ namespace base_cad
             assembly->Clear();
 
         BuildFromJsonFile();
-        //geometry_test();
+        geometry_test();
     }
 
     void GeometryBuilder::BuildFromJsonFile()
@@ -105,8 +104,8 @@ namespace base_cad
             m -> AddModule(__build_primitive(j));
         }
 
-        std::string _name = j.at("name").get<std::string>();
-        m -> SetName(_name.c_str());
+        //std::string _name = j.at("name").get<std::string>();
+        //m -> SetName(_name.c_str());
 
         return m;
     }
@@ -136,6 +135,14 @@ namespace base_cad
         else if(type == "trapezoid")
         {
             m = new Trapezoid();
+        }
+        else if(type == "tube")
+        {
+            float r_min = j.at("r_min").get<float>();
+            float r_max = j.at("r_max").get<float>();
+            float z_half = j.at("z_half_width").get<float>();
+            float angle = j.at("angle").get<float>();
+            m = new Tube(r_min*unit, r_max*unit, z_half*unit, angle);
         }
         else {
             std::cout<<__PRETTY_FUNCTION__<<" ERROR: unsupported gemotry: "
