@@ -125,7 +125,7 @@
                     ]
                 },
                 {
-                    "name": "sector3",
+                    "name": "sector4",
                     "type": "sector1",
                     "coordinate": [
                         {"x": 0},
@@ -139,7 +139,7 @@
                     ]
                 },
                 {
-                    "name": "sector3",
+                    "name": "sector5",
                     "type": "sector1",
                     "coordinate": [
                         {"x": 0},
@@ -153,7 +153,7 @@
                     ]
                 },
                 {
-                    "name": "sector3",
+                    "name": "sector6",
                     "type": "sector1",
                     "coordinate": [
                         {"x": 0},
@@ -167,7 +167,7 @@
                     ]
                 },
                 {
-                    "name": "sector3",
+                    "name": "sector7",
                     "type": "sector1",
                     "coordinate": [
                         {"x": 0},
@@ -181,7 +181,7 @@
                     ]
                 },
                 {
-                    "name": "sector3",
+                    "name": "sector8",
                     "type": "sector1",
                     "coordinate": [
                         {"x": 0},
