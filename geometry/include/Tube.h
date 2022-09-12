@@ -56,6 +56,8 @@ namespace base_cad
         std::vector<int> triangle_vertex_index;
 
         std::vector<QVector3D> corner_coords;
+
+        QColor color;
     };
 }
 

@@ -315,6 +315,120 @@
                         {"y_rot": 0},
                         {"z_rot": 0}
                     ]
+                },
+                {
+                    "name": "cube1",
+                    "type": "cube",
+                    "dimension": [
+                        {"x_half": 10},
+                        {"y_half": 10},
+                        {"z_half": 10}
+                    ],
+                    "color": [
+                        {"r": 255},
+                        {"g": 128},
+                        {"b": 128}
+                    ],
+                    "coordinate":[
+                        {"x": 15},
+                        {"y": 15},
+                        {"z": 200}
+                    ]
+                },
+                {
+                    "name": "cube2",
+                    "type": "cube",
+                    "dimension": [
+                        {"x_half": 10},
+                        {"y_half": 10},
+                        {"z_half": 10}
+                    ],
+                    "color": [
+                        {"r": 255},
+                        {"g": 128},
+                        {"b": 128}
+                    ],
+                    "coordinate":[
+                        {"x": -15},
+                        {"y": 15},
+                        {"z": 200}
+                    ]
+                },
+                {
+                    "name": "cube3",
+                    "type": "cube",
+                    "dimension": [
+                        {"x_half": 10},
+                        {"y_half": 10},
+                        {"z_half": 10}
+                    ],
+                    "color": [
+                        {"r": 255},
+                        {"g": 128},
+                        {"b": 128}
+                    ],
+                    "coordinate":[
+                        {"x": 15},
+                        {"y": -15},
+                        {"z": 200}
+                    ]
+                },
+                {
+                    "name": "cube4",
+                    "type": "cube",
+                    "dimension": [
+                        {"x_half": 10},
+                        {"y_half": 10},
+                        {"z_half": 10}
+                    ],
+                    "color": [
+                        {"r": 255},
+                        {"g": 128},
+                        {"b": 128}
+                    ],
+                    "coordinate":[
+                        {"x": -15},
+                        {"y": -15},
+                        {"z": 200}
+                    ]
+                },
+                {
+                    "name": "cube5",
+                    "type": "cube",
+                    "dimension": [
+                        {"x_half": 10},
+                        {"y_half": 4},
+                        {"z_half": 20}
+                    ],
+                    "color": [
+                        {"r": 0},
+                        {"g": 128},
+                        {"b": 255}
+                    ],
+                    "coordinate":[
+                        {"x": 0},
+                        {"y": -5},
+                        {"z": 250}
+                    ]
+                },
+                {
+                    "name": "cube6",
+                    "type": "cube",
+                    "dimension": [
+                        {"x_half": 10},
+                        {"y_half": 4},
+                        {"z_half": 20}
+                    ],
+                    "color": [
+                        {"r": 0},
+                        {"g": 128},
+                        {"b": 255}
+                    ],
+                    "coordinate":[
+                        {"x": 0},
+                        {"y": 5},
+                        {"z": 250}
+                    ]
                 }
             ]
         },

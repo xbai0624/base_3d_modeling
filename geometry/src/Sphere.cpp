@@ -24,6 +24,8 @@ namespace base_cad
         position.setX(0);
         position.setY(0);
         position.setZ(0);
+
+        color = QColor(0, 128, 128);
     }
 
     Sphere::~Sphere()
@@ -35,10 +37,13 @@ namespace base_cad
         r(_r), x_rot(0), y_rot(0), z_rot(0)
     {
         position.setX(0), position.setY(0), position.setZ(0);
+
+        color = QColor(0, 128, 128);
     }
 
     Sphere::Sphere(float _r, QVector3D pos) :
-        position(pos), r(_r), x_rot(0), y_rot(0), z_rot(0)
+        position(pos), r(_r), x_rot(0), y_rot(0), z_rot(0),
+        color(QColor(0, 128, 128))
     {
     }
 
@@ -46,6 +51,7 @@ namespace base_cad
         : r(_r), x_rot(0), y_rot(0), z_rot(0)
     {
         position.setX(x_pos), position.setY(y_pos), position.setZ(z_pos);
+        color = QColor(0, 128, 128);
     }
 
     Sphere::Sphere(const Sphere &m) :
@@ -54,7 +60,8 @@ namespace base_cad
         r(m.r),
         x_rot(m.x_rot), y_rot(m.y_rot), z_rot(m.z_rot),
         triangles(m.triangles), triangle_edge_config(m.triangle_edge_config),
-        triangle_vertex_index(m.triangle_vertex_index), corner_coords(m.corner_coords)
+        triangle_vertex_index(m.triangle_vertex_index), corner_coords(m.corner_coords),
+        color(m.color)
     {
     }
 
@@ -65,7 +72,8 @@ namespace base_cad
         x_rot(m.x_rot), y_rot(m.y_rot), z_rot(m.z_rot),
         triangles(std::move(m.triangles)), triangle_edge_config(std::move(m.triangle_edge_config)),
         triangle_vertex_index(std::move(m.triangle_vertex_index)),
-        corner_coords(std::move(m.corner_coords))
+        corner_coords(std::move(m.corner_coords)),
+        color(std::move(m.color))
     {
     }
 
@@ -93,6 +101,7 @@ namespace base_cad
         triangle_edge_config = std::move(m.triangle_edge_config);
         triangle_vertex_index = std::move(m.triangle_vertex_index);
         corner_coords = std::move(m.corner_coords);
+        color = std::move(m.color);
 
         return *this;
     }
@@ -132,7 +141,7 @@ namespace base_cad
             exit(0);
         }
 
-        m_module_color[0] = c;
+        color = c;
     }
 
     void Sphere::Init()
@@ -312,6 +321,8 @@ namespace base_cad
         m_module_triangle_vertex_index[0] = triangle_vertex_index;
         // names
         m_module_name[0] = name;
+        // color
+        m_module_color[0] = color;
     }
 
     void Sphere::UnitTest()

@@ -200,22 +200,28 @@ namespace base_cad
         m -> SetName(name.c_str());
 
         // position
-        float x = j.at("coordinate")[0].at("x").get<float>();
-        float y = j.at("coordinate")[1].at("y").get<float>();
-        float z = j.at("coordinate")[2].at("z").get<float>();
-        m -> SetPosition(x*unit, y*unit, z*unit);
+        if(j.contains("coordinate")){
+            float x = j.at("coordinate")[0].at("x").get<float>();
+            float y = j.at("coordinate")[1].at("y").get<float>();
+            float z = j.at("coordinate")[2].at("z").get<float>();
+            m -> SetPosition(x*unit, y*unit, z*unit);
+        }
 
         // rotation
-        x = j.at("rotation")[0].at("x_rot").get<float>();
-        y = j.at("rotation")[1].at("y_rot").get<float>();
-        z = j.at("rotation")[2].at("z_rot").get<float>();
-        m -> SetRotation(x, y, z);
+        if(j.contains("rotation")){
+            float x = j.at("rotation")[0].at("x_rot").get<float>();
+            float y = j.at("rotation")[1].at("y_rot").get<float>();
+            float z = j.at("rotation")[2].at("z_rot").get<float>();
+            m -> SetRotation(x, y, z);
+        }
 
         // color
-        int r = j.at("color")[0].at("r").get<int>();
-        int g = j.at("color")[1].at("g").get<int>();
-        int b = j.at("color")[2].at("b").get<int>();
-        m -> SetColor(QColor(r, g, b));
+        if(j.contains("color")){
+            int r = j.at("color")[0].at("r").get<int>();
+            int g = j.at("color")[1].at("g").get<int>();
+            int b = j.at("color")[2].at("b").get<int>();
+            m -> SetColor(QColor(r, g, b));
+        }
 
         m -> Init();
 
