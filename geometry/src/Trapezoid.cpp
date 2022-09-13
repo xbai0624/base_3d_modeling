@@ -20,7 +20,7 @@ namespace base_cad
         position.setY(0);
         position.setZ(0);
 
-        color = QColor(0, 128, 128);
+        color = DEFAULT_COLOR;
     }
 
     Trapezoid::~Trapezoid()
@@ -35,7 +35,7 @@ namespace base_cad
         x_rot(0), y_rot(0), z_rot(0)
     {
         position.setX(0), position.setY(0), position.setZ(0);
-        color = QColor(0, 128, 128);
+        color = DEFAULT_COLOR;
     }
 
     Trapezoid::Trapezoid(float top_x_half, float top_y_half,
@@ -43,7 +43,7 @@ namespace base_cad
         top_x_half_width(top_x_half), top_y_half_width(top_y_half),
         btm_x_half_width(btm_x_half), btm_y_half_width(btm_y_half), z_half_width(z_half),
         position(pos),
-        x_rot(0), y_rot(0), z_rot(0), color(QColor(0, 128, 128))
+        x_rot(0), y_rot(0), z_rot(0), color(DEFAULT_COLOR)
     {
     }
 
@@ -55,7 +55,7 @@ namespace base_cad
         x_rot(0), y_rot(0), z_rot(0)
     {
         position.setX(x_pos), position.setY(y_pos), position.setZ(z_pos);
-        color = QColor(0, 128, 128);
+        color = DEFAULT_COLOR;
     }
 
     Trapezoid::Trapezoid(const Trapezoid &m) :

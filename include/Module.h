@@ -15,6 +15,8 @@ namespace base_cad
     #define SHOW_EDGE triangle_edge_config.push_back(SHOW_WIRE_FRAME)
     #define HIDE_EDGE triangle_edge_config.push_back(HIDE_WIRE_FRAME)
 
+    #define DEFAULT_COLOR QColor(150, 150, 150)
+
     class Module
     {
     public:

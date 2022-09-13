@@ -1,6 +1,7 @@
 # Overview
 A base 3d modeling framework based on Qt5 and opengl.
 Designed for visualization of detector assembly.
+Detector assembly can be described using json files.
 
 # Demos:
 ## spectrometer demo:

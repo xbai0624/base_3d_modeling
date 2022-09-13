@@ -25,7 +25,7 @@ namespace base_cad
         position.setY(0);
         position.setZ(0);
 
-        color = QColor(0, 128, 128);
+        color = DEFAULT_COLOR;
     }
 
     Sphere::~Sphere()
@@ -38,12 +38,12 @@ namespace base_cad
     {
         position.setX(0), position.setY(0), position.setZ(0);
 
-        color = QColor(0, 128, 128);
+        color = DEFAULT_COLOR;
     }
 
     Sphere::Sphere(float _r, QVector3D pos) :
         position(pos), r(_r), x_rot(0), y_rot(0), z_rot(0),
-        color(QColor(0, 128, 128))
+        color(DEFAULT_COLOR)
     {
     }
 
@@ -51,7 +51,7 @@ namespace base_cad
         : r(_r), x_rot(0), y_rot(0), z_rot(0)
     {
         position.setX(x_pos), position.setY(y_pos), position.setZ(z_pos);
-        color = QColor(0, 128, 128);
+        color = DEFAULT_COLOR;
     }
 
     Sphere::Sphere(const Sphere &m) :
